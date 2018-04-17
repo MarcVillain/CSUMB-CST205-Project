@@ -1,66 +1,66 @@
-from PyQt5.QtCore import Qt
-import numpy as np
-import cv2
+import sys
+sys.path.append('..')
+
+from pytoshop.objects.image_o import Image
+
+class DrawingBoardController:
+
+    def __init__(self, main_c, view):
+        self.main_c = main_c
+        self.view = view
+
+    def onMousePressed(self, event):
+        if self.main_c.command_pressed:
+            self.main_c.onMousePressed(event.globalPos())
+        else:
+            self.drawAt(event.x(), event.y())
+
+    def onMouseMove(self, event):
+        if self.main_c.command_pressed:
+            self.main_c.onMouseMove(event.globalPos())
+        else:
+            self.drawAt(event.x(), event.y())
+            
+    def drawAt(self, x, y):
+        self.image.draw(x, y, self.view.brush)
+        self.view.displayImage(self.image)
+
+    def createImage(self, width, height, image_name=None):
+        self.image = Image(width, height, image_name)
+        self.view.displayImage(self.image)
 
 class MainController:
 
-    def __init__(self, view, drawing_board):
+    def __init__(self, view):
         self.view = view
-        self.drawing_board = drawing_board
         self.command_pressed = False
 
-    def onKeyPressed(self, event):
-        if event.key() == Qt.Key_Control:
-            self.command_pressed = True
-            self.view.changeCursor(Qt.OpenHandCursor)
+    def onControlPressed(self):
+        self.command_pressed = True
+        self.view.showOpenHandCursor()
 
-    def onKeyReleased(self, event):
-        if event.key() == Qt.Key_Control:
-            self.command_pressed = False
-            self.view.changeCursor(Qt.ArrowCursor)
+    def onControlReleased(self):
+        self.command_pressed = False
+        self.view.showArrowCursor()
         
-    def onMousePressed(self, event, drawing):
+    def onMousePressed(self, pos):
         if self.command_pressed:
-            self.offset = event.pos()
-            self.drawing_board_offset = self.drawing_board.pos()
-            self.view.changeCursor(Qt.ClosedHandCursor)
-        elif drawing:
-            radius = 5
-            color = (0, 0, 255)
-            thickness = -1 # Fill
-            draw(event.x(), event.y(), radius, color, thickness)
+            self.start_board = self.view.drawing_board.pos()
+            self.start_point = pos
+            self.view.showClosedHandCursor()
 
-    def onMouseReleased(self, event):
-    	if self.command_pressed:
-            self.view.changeCursor(Qt.OpenHandCursor)
+    def onMouseReleased(self):
+        if self.command_pressed:
+            self.view.showOpenHandCursor()
 
-    def onMouseMove(self, event):
-    	if self.command_pressed:
-            x_g = event.globalX()
-            y_g = event.globalY()
-            x_l = self.drawing_board_offset.x()
-            y_l = self.drawing_board_offset.y()
-            x_o = self.offset.x()
-            y_o = self.offset.y()
-            x_s = self.view.x()
-            y_s = self.view.y() + 22
+    def onMouseMove(self, pos):
+        if self.command_pressed:
+            end_point = pos
 
-            deltaX = x_g - x_s - x_o
-            deltaY = y_g - y_s - y_o
+            deltaX = end_point.x() - self.start_point.x()
+            deltaY = end_point.y() - self.start_point.y()
 
-            self.drawing_board.move(x_l + deltaX, y_l + deltaY)
-        elif drawing:
-            radius = 5
-            color = (0, 0, 255)
-            thickness = -1 # Fill
-            draw(event.x(), event.y(), radius, color, thickness)
+            newX = self.start_board.x() + deltaX
+            newY = self.start_board.y() + deltaY
 
-    def draw(self, event):
-        if not self.command_pressed:
-            cv2.circle(self.image,(event.x(),event.y()),5,(0,0,255),-1)
-
-    def createImage(self, width, height, image_name=None):
-        if image_name == None:
-            self.image = cv2.cvtColor(np.full((height, width, 3), 255, np.uint8), cv2.COLOR_BGR2RGB)
-        else:
-            self.image = cv2.imread(image_name)
+            self.view.drawing_board.move(newX, newY)
