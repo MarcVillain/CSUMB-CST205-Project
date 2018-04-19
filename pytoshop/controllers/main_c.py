@@ -8,6 +8,7 @@ class DrawingBoardController:
     def __init__(self, main_c, view):
         self.main_c = main_c
         self.view = view
+        self.lastPoint = None
 
     def onMousePressed(self, event):
         if self.main_c.command_pressed:
@@ -20,10 +21,21 @@ class DrawingBoardController:
             self.main_c.onMouseMove(event.globalPos())
         else:
             self.drawAt(event.x(), event.y())
+
+    def onMouseReleased(self, event):
+        if self.main_c.command_pressed:
+            self.main_c.onMouseReleased(event.globalPos())
+        else:
+            self.lastPoint = None
             
     def drawAt(self, x, y):
-        self.image.draw(x, y, self.view.brush)
+        if self.lastPoint != None:
+            self.image.draw(self.view.brush, x, y, self.lastPoint[0], self.lastPoint[1])
+        else:
+            self.image.draw(self.view.brush, x, y)
+
         self.view.displayImage(self.image)
+        self.lastPoint = (x, y)
 
     def createImage(self, width, height, image_name=None):
         self.image = Image(width, height, image_name)

@@ -7,7 +7,8 @@ class Image:
 		channels_count = 3
 
 		if image_name == None:
-			self.value = cv2.cvtColor(np.full((height, width, channels_count), 255, np.uint8), cv2.COLOR_BGR2RGB)
+			self.value = np.full((height, width, channels_count), 255, np.uint8)
+			print(self.value)
 		else:
 			self.value = imread(image_name)
 
@@ -15,5 +16,8 @@ class Image:
 		self.height = height
 		self.bytesPerLine = width * channels_count
 
-	def draw(self, x, y, brush):
-		cv2.circle(self.value, (x,y), brush.radius, brush.color, brush.thickness)
+	def draw(self, brush, xTo, yTo, xFrom=None, yFrom=None):
+		if xFrom == None or yFrom == None:
+			cv2.circle(self.value, (xTo,yTo), brush.radius, brush.color, brush.thickness)
+		else:
+			cv2.line(self.value, (xFrom,yFrom), (xTo,yTo), brush.color, brush.radius*2)

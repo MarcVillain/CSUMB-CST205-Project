@@ -5,7 +5,7 @@ from pytoshop.controllers.main_c import MainController,DrawingBoardController
 from pytoshop.objects.brush_o import Brush
 
 from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout,QLabel
-from PyQt5.QtGui import QImage,QPixmap,QPainter
+from PyQt5.QtGui import QImage,QPixmap
 from PyQt5.QtCore import Qt
 
 class DrawingBoard(QLabel):
@@ -15,7 +15,7 @@ class DrawingBoard(QLabel):
         self.controller = DrawingBoardController(parent.controller, self)
         self.controller.createImage(500, 500)
         self.brush = Brush()
-        
+
     def displayImage(self, image):
         image = QImage(image.value, image.width, image.height, image.bytesPerLine, QImage.Format_RGB888)
         pixmap = QPixmap(image)
@@ -26,6 +26,15 @@ class DrawingBoard(QLabel):
 
     def mouseMoveEvent(self, event):
         self.controller.onMouseMove(event)
+
+    def mouseReleaseEvent(self, event):
+        self.controller.onMouseReleased(event)
+
+    #def wheelEvent(self, event):
+    #    pixmap = self.pixmap()
+    #    orientation = 1 if event.inverted() else -1
+    #    delta = 10*orientation
+    #    self.setPixmap(pixmap.scaledToWidth(pixmap.width()+delta))
 
 class MainView(QWidget):
 
