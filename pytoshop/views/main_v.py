@@ -15,7 +15,7 @@ class DrawingBoard(QLabel):
         super().__init__(parent)
         self.controller = DrawingBoardController(parent.controller, self)
         self.controller.createImage(500, 500)
-        self.brush = CircleBrush()
+        self.brush = SquareBrush()
 
     def displayImage(self, image):
         image = QImage(image.values, image.width, image.height, image.bytesPerLine, QImage.Format_RGB888)
