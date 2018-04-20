@@ -1,6 +1,6 @@
 class Brush:
     
-    def __init__(self, size=6, color=(0,0,0), hardness=0, opacity=100):
+    def __init__(self, size=6, color=(0,0,0), hardness=90, opacity=100):
         self.size = size
         self.color = color
         self.hardness = hardness

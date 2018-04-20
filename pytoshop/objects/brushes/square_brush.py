@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../../')
+sys.path.append('../..')
 
 from pytoshop.objects.brush_o import Brush
 
@@ -16,14 +16,18 @@ class SquareBrush(Brush):
         h = self.hardness / 100
         o = self.opacity / 100
 
-        for dy in range(-r, r+1):
-            for dx in range(-r, r+1):
-                x, y = x0+dx, y0+dy
-                if x >= 0 and x < image.width and y >= 0 and y < image.height:
-                    d = sqrt((x0-x)**2 + (y0-y)**2) / self.size
-                    #d = (abs(x+y)+abs(x-y))/(2*(x*x+y*y))
-                    a = 1 if d < h or h == 1 else (1-d)/(1-h) #exp(-7*d)
-                    a *= o
-                    for i in range(0, 3):
-                        val = image.values[y][x][i]*(1-a) + a*c[i]
-                        image.values[y][x][i] = val
+        visited = []
+
+        for pos in range(0, r+1):
+            dx = pos
+            dy = pos
+            d = pos / r
+            for x in range(x0-dx, x0+dy+1):
+                for y in range(y0-dx, y0+dy+1):
+                    if x >= 0 and x < image.width and y >= 0 and y < image.height and (x, y) not in visited:
+                        visited.append((x, y))
+                        a = 1 if d < h or h == 1 else (1-d)/(1-h) #exp(-7*d)
+                        a *= o
+                        for i in range(0, 3):
+                            val = image.values[y][x][i]*(1-a) + a*c[i]
+                            image.values[y][x][i] = val
