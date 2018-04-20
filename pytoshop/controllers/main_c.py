@@ -14,28 +14,23 @@ class DrawingBoardController:
         if self.main_c.command_pressed:
             self.main_c.onMousePressed(event.globalPos())
         else:
-            self.drawAt(event.x(), event.y())
+            self.lastPoint = event.x(), event.y()
+            self.image.draw(self.view.brush, event.x(), event.y())
+            self.view.displayImage(self.image)
 
     def onMouseMove(self, event):
         if self.main_c.command_pressed:
             self.main_c.onMouseMove(event.globalPos())
         else:
-            self.drawAt(event.x(), event.y())
+            self.image.drawLine(self.view.brush, event.x(), event.y(), self.lastPoint[0], self.lastPoint[1])
+            self.lastPoint = event.x(), event.y()
+            self.view.displayImage(self.image)
 
     def onMouseReleased(self, event):
         if self.main_c.command_pressed:
             self.main_c.onMouseReleased(event.globalPos())
         else:
             self.lastPoint = None
-            
-    def drawAt(self, x, y):
-        if self.lastPoint != None:
-            self.image.draw(self.view.brush, x, y, self.lastPoint[0], self.lastPoint[1])
-        else:
-            self.image.draw(self.view.brush, x, y)
-
-        self.view.displayImage(self.image)
-        self.lastPoint = (x, y)
 
     def createImage(self, width, height, image_name=None):
         self.image = Image(width, height, image_name)

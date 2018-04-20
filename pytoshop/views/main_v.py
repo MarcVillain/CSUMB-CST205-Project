@@ -2,7 +2,8 @@ import sys
 sys.path.append('..')
 
 from pytoshop.controllers.main_c import MainController,DrawingBoardController
-from pytoshop.objects.brush_o import Brush
+from pytoshop.objects.brushes.circle_brush import CircleBrush
+from pytoshop.objects.brushes.square_brush import SquareBrush
 
 from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout,QLabel
 from PyQt5.QtGui import QImage,QPixmap
@@ -14,10 +15,10 @@ class DrawingBoard(QLabel):
         super().__init__(parent)
         self.controller = DrawingBoardController(parent.controller, self)
         self.controller.createImage(500, 500)
-        self.brush = Brush()
+        self.brush = CircleBrush()
 
     def displayImage(self, image):
-        image = QImage(image.value, image.width, image.height, image.bytesPerLine, QImage.Format_RGB888)
+        image = QImage(image.values, image.width, image.height, image.bytesPerLine, QImage.Format_RGB888)
         pixmap = QPixmap(image)
         self.setPixmap(pixmap)
 
