@@ -3,7 +3,7 @@ from pytoshop.objects.brush_o import Brush
 from math import sqrt
 
 
-class CircleBrush(Brush):
+class EraserBrush(Brush):
 
     def __init__(self):
         super().__init__()
@@ -21,4 +21,4 @@ class CircleBrush(Brush):
                     if d <= 1:
                         a = 1 if d < hardness or hardness == 1 else (1 - d) / (1 - hardness)  # exp(-7*d)
                         a *= opacity
-                        layer.draw(x, y, self.color, a)
+                        layer.erase(x, y, a)

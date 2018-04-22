@@ -1,23 +1,33 @@
-import numpy as np
+from pytoshop.objects.layer_o import Layer
+
 import cv2
-import math
+
 
 class Image:
 
     def __init__(self, width, height, image_name=None):
-        channels_count = 3
-
-        if image_name == None:
-            self.values = np.full((height, width, channels_count), 255, np.uint8)
-        else:
-            self.values = imread(image_name)
-
+        self.layers = []
+        self.channel_count = 4
         self.width = width
         self.height = height
-        self.bytesPerLine = width * channels_count
+        self.bytesPerLine = width * self.channel_count
+
+        first_layer = Layer(self)
+        self.layers.append(first_layer)
+        if image_name is not None:
+            first_layer.load(cv2.imread(image_name))
+
+        self.current_layer = self.top_layer = self.newLayer()
+
+    def newLayer(self):
+        bottom_layer = self.layers[-1]
+        new_layer = Layer(self, bottom_layer)
+        bottom_layer.top_layer = new_layer
+        self.layers.append(new_layer)
+        return new_layer
 
     def draw(self, brush, x0, y0):
-        brush.draw(self, x0, y0)
+        brush.draw(self.current_layer, x0, y0)
 
     def drawLine(self, brush, x0, y0, x1, y1):
         """
@@ -38,12 +48,12 @@ class Image:
             dx, dy = dy, dx
             xx, xy, yx, yy = 0, ysign, xsign, 0
 
-        D = 2*dy - dx
+        D = 2 * dy - dx
         y = 0
 
         for x in range(dx + 1):
-            brush.draw(self, x0 + x*xx + y*yx, y0 + x*xy + y*yy)
+            brush.draw(self.current_layer, x0 + x * xx + y * yx, y0 + x * xy + y * yy)
             if D >= 0:
                 y += 1
-                D -= 2*dx
-            D += 2*dy
+                D -= 2 * dx
+            D += 2 * dy
