@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 
-from pytoshop.utils.color import color_add
+from pytoshop.utils.color import color_add_rgb
+from pytoshop.utils.color import color_add_rgba
 
 
 class Layer:
@@ -43,22 +44,21 @@ class Layer:
 
     def draw(self, x, y, color, alpha=1):
         # Draw on layer
-        self.values[y][x] = color_add(self.values[y][x], color, alpha)
+        self.values[y][x] = color_add_rgb(self.values[y][x], color, alpha)
 
         # Draw on display layer
-        new_color = color_add(self.display_values[y][x], color, alpha)
-        self.display_values[y][x] = new_color
+        self.display_values[y][x] = color_add_rgb(self.display_values[y][x], color, alpha)
 
         # Draw on top layer
         if self.top_layer is not None:
-            self.top_layer.drawDisplay(x, y, (new_color[0], new_color[1], new_color[2]), new_color[3])
+            self.top_layer.drawDisplay(x, y, self.display_values[y][x])
 
-    def drawDisplay(self, x, y, color, alpha):
+    def drawDisplay(self, x, y, color):
         if self.values[y][x][3] == 1:
             return
 
         # Draw on display layer
-        new_color = color_add(self.values[y][x], color, alpha)
+        new_color = color_add_rgba(color, self.values[y][x])
         self.display_values[y][x] = new_color
 
         # Draw on top layer
