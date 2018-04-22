@@ -9,6 +9,7 @@ class CircleBrush(Brush):
         super().__init__()
 
     def draw(self, layer, x0, y0):
+        color = self.color
         radius = self.size // 2
         hardness = self.hardness / 100
         opacity = self.opacity / 100
@@ -21,4 +22,4 @@ class CircleBrush(Brush):
                     if d <= 1:
                         a = 1 if d < hardness or hardness == 1 else (1 - d) / (1 - hardness)  # exp(-7*d)
                         a *= opacity
-                        layer.draw(x, y, self.color, a)
+                        layer.draw(x, y, color, a)

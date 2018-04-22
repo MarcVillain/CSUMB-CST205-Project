@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+from pytoshop.utils.color import color_add
+
 
 class Layer:
 
@@ -41,52 +43,27 @@ class Layer:
 
     def draw(self, x, y, color, alpha=1):
         # Draw on layer
-        value = self.values[y][x]
-
-        r = int(value[0] * (1-alpha) + color[0] * alpha)
-        g = int(value[1] * (1-alpha) + color[1] * alpha)
-        b = int(value[2] * (1-alpha) + color[2] * alpha)
-        a = value[3] + alpha
-
-        a = 255 if a > 1 else a * 255
-
-        self.values[y][x] = [r, g, b, a]
+        self.values[y][x] = color_add(self.values[y][x], color, alpha)
 
         # Draw on display layer
-        display_value = self.display_values[y][x]
-
-        r = int(display_value[0] * (1-alpha) + color[0] * alpha)
-        g = int(display_value[1] * (1-alpha) + color[1] * alpha)
-        b = int(display_value[2] * (1-alpha) + color[2] * alpha)
-        a = display_value[3] + alpha
-
-        a = 255 if a > 1 else a * 255
-
-        self.display_values[y][x] = [r, g, b, a]
+        new_color = color_add(self.display_values[y][x], color, alpha)
+        self.display_values[y][x] = new_color
 
         # Draw on top layer
         if self.top_layer is not None:
-            self.top_layer.drawDisplay(x, y, (r, g, b), a)
+            self.top_layer.drawDisplay(x, y, (new_color[0], new_color[1], new_color[2]), new_color[3])
 
     def drawDisplay(self, x, y, color, alpha):
-        # Draw on display layer
-        value = self.values[y][x]
-
-        if value[3] == 255:
+        if self.values[y][x][3] == 1:
             return
 
-        r = int(color[0] * (1 - value[3]) + value[0] * value[3])
-        g = int(color[1] * (1 - value[3]) + value[1] * value[3])
-        b = int(color[2] * (1 - value[3]) + value[2] * value[3])
-        a = alpha + value[3]
-
-        a = 255 if a > 1 else a * 255
-
-        self.display_values[y][x] = [r, g, b, a]
+        # Draw on display layer
+        new_color = color_add(self.values[y][x], color, alpha)
+        self.display_values[y][x] = new_color
 
         # Draw on top layer
         if self.top_layer is not None:
-            self.top_layer.drawDisplay(x, y, (r, g, b), a)
+            self.top_layer.drawDisplay(x, y, (new_color[0], new_color[1], new_color[2]), new_color[3])
 
 #    def erase(self, x, y, alpha):
 #        value = self.values[y][x]
