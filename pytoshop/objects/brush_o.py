@@ -6,5 +6,5 @@ class Brush:
         self.hardness = hardness
         self.opacity = opacity
 
-    def draw(self, layer, x, y):
+    def draw(self, layer, point):
         pass

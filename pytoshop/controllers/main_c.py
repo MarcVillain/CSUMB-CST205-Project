@@ -24,8 +24,8 @@ class DrawingBoardController:
         if self.main_c.command_pressed:
             self.main_c.onMousePressed(event.globalPos())
         else:
-            self.lastPoint = event.x(), event.y()
-            self.image.draw(self.view.brush, event.x(), event.y())
+            self.lastPoint = self.image.map(event.x(), event.y(), self.view.width(), self.view.height())
+            self.image.draw(self.view.brush, self.lastPoint)
             self.view.display(self.image)
         self.pressing = True
 
@@ -33,12 +33,15 @@ class DrawingBoardController:
         if self.pressing and self.main_c.command_pressed:
             self.main_c.onMouseMove(event.globalPos())
         elif self.lastPoint is not None:  # If pressing
-            self.image.drawLine(self.view.brush, event.x(), event.y(), self.lastPoint[0], self.lastPoint[1])
-            self.lastPoint = event.x(), event.y()
+            endPoint = self.image.map(event.x(), event.y(), self.view.width(), self.view.height())
+            self.image.drawLine(self.view.brush, self.lastPoint, endPoint)
+            self.lastPoint = endPoint
             self.view.display(self.image)
         else:
+            self.main_c.view.hideCursor()
             self.image.top_layer.clear()
-            self.image.drawBrush(self.view.brush, event.x(), event.y())
+            startPoint = self.image.map(event.x(), event.y(), self.view.width(), self.view.height())
+            self.image.drawBrush(self.view.brush, startPoint)
             self.view.display(self.image)
 
     def onMouseReleased(self, event):
@@ -76,6 +79,16 @@ class DrawingBoardController:
         else:
             self.view.brush = CircleBrush()
             self.test_switch_2 = 0
+
+    def onWheel(self, angleDeltaY):
+        self.image.scale += angleDeltaY * 0.01
+        self.image.scale = max(self.image.min_scale, min(self.image.scale, self.image.max_scale))
+        self.view.display(self.image)
+
+    def onLeave(self):
+        self.image.top_layer.clear()
+        self.view.display(self.image)
+        self.main_c.view.showArrowCursor()
 
 
 class MainController:

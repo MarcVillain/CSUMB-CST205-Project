@@ -22,9 +22,15 @@ class DrawingBoard(QLabel):
         #cv2.imwrite("disp_layer0.png", image.layers[0].display_values)
         #cv2.imwrite("disp_layer1.png", image.layers[1].display_values)
 
+        new_width, new_height = image.width * image.scale, image.height * image.scale
+
         qimage = QImage(image.top_layer.display_values, image.width, image.height, image.bytesPerLine, QImage.Format_RGBA8888)
+        qimage = qimage.scaled(new_width, new_height)
         pixmap = QPixmap(qimage)
+        pixmap = pixmap.scaled(new_width, new_height)
+
         self.setPixmap(pixmap)
+        self.setGeometry(self.x(), self.y(), new_width, new_height)
 
     def mousePressEvent(self, event):
         self.controller.onMousePressed(event)
@@ -35,11 +41,11 @@ class DrawingBoard(QLabel):
     def mouseReleaseEvent(self, event):
         self.controller.onMouseReleased(event)
 
-    # def wheelEvent(self, event):
-    #    pixmap = self.pixmap()
-    #    orientation = 1 if event.inverted() else -1
-    #    delta = 10*orientation
-    #    self.setPixmap(pixmap.scaledToWidth(pixmap.width()+delta))
+    def leaveEvent(self, event):
+        self.controller.onLeave()
+
+    def wheelEvent(self, event):
+        self.controller.onWheel(event.angleDelta().y())
 
 
 class MainView(QWidget):
@@ -77,7 +83,13 @@ class MainView(QWidget):
     def mouseMoveEvent(self, event):
         self.controller.onMouseMove(event.globalPos())
 
+    def wheelEvent(self, event):
+        self.drawing_board.wheelEvent(event)
+
     # FUNCTIONS #
+
+    def hideCursor(self):
+        QApplication.setOverrideCursor(Qt.BlankCursor)
 
     def showOpenHandCursor(self):
         QApplication.setOverrideCursor(Qt.OpenHandCursor)

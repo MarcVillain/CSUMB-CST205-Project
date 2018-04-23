@@ -12,6 +12,8 @@ class Image:
         self.height = height
         self.bytesPerLine = width * self.channel_count
 
+        self.scale, self.min_scale, self.max_scale = 1, 0.5, 2
+
         self.current_layer = first_layer = Layer(self)
         self.layers.append(first_layer)
         if image_name is not None:
@@ -26,16 +28,19 @@ class Image:
         self.layers.append(new_layer)
         return new_layer
 
-    def drawBrush(self, brush, x0, y0):
-        brush.draw(self.top_layer, x0, y0)
+    def drawBrush(self, brush, point):
+        brush.draw(self.top_layer, point)
 
-    def draw(self, brush, x0, y0):
-        brush.draw(self.current_layer, x0, y0)
+    def draw(self, brush, point):
+        brush.draw(self.current_layer, point)
 
-    def drawLine(self, brush, x0, y0, x1, y1):
+    def drawLine(self, brush, startPoint, endPoint):
         """
         Bresenham's algorithm
         """
+        x0, y0 = startPoint
+        x1, y1 = endPoint
+
         dx = x1 - x0
         dy = y1 - y0
 
@@ -55,8 +60,13 @@ class Image:
         y = 0
 
         for x in range(dx + 1):
-            brush.draw(self.current_layer, x0 + x * xx + y * yx, y0 + x * xy + y * yy)
+            brush.draw(self.current_layer, (x0 + x * xx + y * yx, y0 + x * xy + y * yy))
             if D >= 0:
                 y += 1
                 D -= 2 * dx
             D += 2 * dy
+
+    def map(self, x0, y0, width, height):
+        x = int(x0 * self.width / width)
+        y = int(y0 * self.height / height)
+        return x, y

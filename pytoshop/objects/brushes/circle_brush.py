@@ -8,7 +8,9 @@ class CircleBrush(Brush):
     def __init__(self):
         super().__init__()
 
-    def draw(self, layer, x0, y0):
+    def draw(self, layer, point):
+        x0, y0 = point
+
         color = self.color
         radius = self.size // 2
         hardness = self.hardness / 100
