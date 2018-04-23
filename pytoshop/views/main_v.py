@@ -54,7 +54,7 @@ class MainView(QWidget):
         super().__init__()
 
         self.controller = MainController(self)
-        self.drawing_board = DrawingBoard(self, 512, 512, '/Users/Marc/Downloads/Lenna.png')
+        self.drawing_board = DrawingBoard(self, 512, 512)
 
         self.setGeometry(0, 0, 600, 600)
 
