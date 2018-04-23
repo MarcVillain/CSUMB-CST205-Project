@@ -7,13 +7,15 @@ from PyQt5.QtCore import Qt
 
 import cv2
 
+from pytoshop.objects.brushes.square_brush import SquareBrush
+
 
 class DrawingBoard(QLabel):
 
     def __init__(self, parent, width, height, image_name=None):
         super().__init__(parent)
         self.controller = DrawingBoardController(parent.controller, self, width, height, image_name)
-        self.brush = CircleBrush()
+        self.brush = SquareBrush()
 
     def display(self, image):
         cv2.imwrite("layer0.png", image.layers[0].values)

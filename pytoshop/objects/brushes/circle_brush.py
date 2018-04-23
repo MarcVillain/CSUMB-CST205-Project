@@ -14,12 +14,22 @@ class CircleBrush(Brush):
         hardness = self.hardness / 100
         opacity = self.opacity / 100
 
-        for dy in range(-radius, radius + 1):
-            for dx in range(-radius, radius + 1):
-                x, y = x0 + dx, y0 + dy
-                if layer.canDrawAt(x, y):
-                    d = sqrt((x0 - x) ** 2 + (y0 - y) ** 2) / radius
-                    if d <= 1:
-                        a = 1 if d < hardness or hardness == 1 else (1 - d) / (1 - hardness)  # exp(-7*d)
-                        a *= opacity
-                        layer.draw(x, y, color, a)
+        for dy in range(0, radius + 1):
+            for dx in range(0, radius + 1):
+                xA, yA = x0 + dx, y0 + dy
+                xB, yB = x0 - dx, y0 + dy
+                xC, yC = x0 + dx, y0 - dy
+                xD, yD = x0 - dx, y0 - dy
+
+                d = ((x0 - xA) ** 2 + (y0 - yA) ** 2) / (radius*radius)
+                if d <= 1:
+                    a = 1 if d < hardness or hardness == 1 else (1 - d) / (1 - hardness)  # exp(-7*d)
+                    a *= opacity
+                    if layer.canDrawAt(xA, yA):
+                        layer.draw(xA, yA, color, a)
+                    if layer.canDrawAt(xB, yB):
+                        layer.draw(xB, yB, color, a)
+                    if layer.canDrawAt(xC, yC):
+                        layer.draw(xC, yC, color, a)
+                    if layer.canDrawAt(xD, yD):
+                        layer.draw(xD, yD, color, a)
