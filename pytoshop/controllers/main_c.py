@@ -14,6 +14,8 @@ class DrawingBoardController:
         self.image = Image(width, height, image_name)
         self.view.display(self.image)
 
+        self.pressing = False
+
         self.test_switch = 0
         self.test_switch_2 = 0
         self.test_switch_3 = 0
@@ -25,11 +27,12 @@ class DrawingBoardController:
             self.lastPoint = event.x(), event.y()
             self.image.draw(self.view.brush, event.x(), event.y())
             self.view.display(self.image)
+        self.pressing = True
 
     def onMouseMove(self, event):
-        if self.main_c.command_pressed:
+        if self.pressing and self.main_c.command_pressed:
             self.main_c.onMouseMove(event.globalPos())
-        elif self.lastPoint is not None:
+        elif self.lastPoint is not None:  # If pressing
             self.image.drawLine(self.view.brush, event.x(), event.y(), self.lastPoint[0], self.lastPoint[1])
             self.lastPoint = event.x(), event.y()
             self.view.display(self.image)
@@ -43,6 +46,7 @@ class DrawingBoardController:
             self.main_c.onMouseReleased()
         else:
             self.lastPoint = None
+        self.pressing = False
 
     def switchLayer(self):
         if self.test_switch == 0:
