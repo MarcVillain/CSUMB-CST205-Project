@@ -29,9 +29,13 @@ class DrawingBoardController:
     def onMouseMove(self, event):
         if self.main_c.command_pressed:
             self.main_c.onMouseMove(event.globalPos())
-        else:
+        elif self.lastPoint is not None:
             self.image.drawLine(self.view.brush, event.x(), event.y(), self.lastPoint[0], self.lastPoint[1])
             self.lastPoint = event.x(), event.y()
+            self.view.display(self.image)
+        else:
+            self.image.top_layer.clear()
+            self.image.drawBrush(self.view.brush, event.x(), event.y())
             self.view.display(self.image)
 
     def onMouseReleased(self, event):

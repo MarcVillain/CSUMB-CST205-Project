@@ -25,13 +25,19 @@ class SquareBrush(Brush):
 
             for p in [-pos, pos]:
                 # Right and left sides
-                layer.draw(x0+p, y0, color, a)
+                if layer.canDrawAt(x0+p, y0):
+                    layer.draw(x0+p, y0, color, a)
                 for dy in range(1, pos+1):
-                    layer.draw(x0+p, y0+dy, color, a)
-                    layer.draw(x0+p, y0-dy, color, a)
+                    if layer.canDrawAt(x0+p, y0+dy):
+                        layer.draw(x0+p, y0+dy, color, a)
+                    if layer.canDrawAt(x0+p, y0-dy):
+                        layer.draw(x0+p, y0-dy, color, a)
 
                 # Top and bottom sides
-                layer.draw(x0, y0+p, color, a)
+                if layer.canDrawAt(x0, y0+p):
+                    layer.draw(x0, y0+p, color, a)
                 for dx in range(1, pos):
-                    layer.draw(x0+dx, y0+p, color, a)
-                    layer.draw(x0-dx, y0+p, color, a)
+                    if layer.canDrawAt(x0+dx, y0+p):
+                        layer.draw(x0+dx, y0+p, color, a)
+                    if layer.canDrawAt(x0-dx, y0+p):
+                        layer.draw(x0-dx, y0+p, color, a)

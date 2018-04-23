@@ -20,6 +20,10 @@ class Layer:
             for i, col in enumerate(row):
                 self.draw(i, j, (col[2], col[1], col[0]))
 
+    def clear(self):
+        self.values = np.full((self.image.height, self.image.width, self.image.channel_count), 0, np.uint8)
+        self.display_values = np.copy(self.bottom_layer.display_values)
+
     def draw(self, x, y, color, alpha=1):
         # Draw on layer
         self.values[y][x] = color_add_rgb(self.values[y][x], color, alpha)
@@ -58,4 +62,4 @@ class Layer:
             self.top_layer.drawDisplay(x, y, self.display_values[y][x])
 
     def canDrawAt(self, x, y):
-        return 0 < x < self.image.width and 0 < y < self.image.height
+        return 0 <= x < self.image.width and 0 <= y < self.image.height

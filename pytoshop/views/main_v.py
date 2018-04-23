@@ -3,11 +3,9 @@ from pytoshop.objects.brushes.circle_brush import CircleBrush
 
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEvent
 
 import cv2
-
-from pytoshop.objects.brushes.square_brush import SquareBrush
 
 
 class DrawingBoard(QLabel):
@@ -15,13 +13,14 @@ class DrawingBoard(QLabel):
     def __init__(self, parent, width, height, image_name=None):
         super().__init__(parent)
         self.controller = DrawingBoardController(parent.controller, self, width, height, image_name)
-        self.brush = SquareBrush()
+        self.brush = CircleBrush()
+        self.setMouseTracking(True)
 
     def display(self, image):
-        cv2.imwrite("layer0.png", image.layers[0].values)
-        cv2.imwrite("layer1.png", image.layers[1].values)
-        cv2.imwrite("disp_layer0.png", image.layers[0].display_values)
-        cv2.imwrite("disp_layer1.png", image.layers[1].display_values)
+        #cv2.imwrite("layer0.png", image.layers[0].values)
+        #cv2.imwrite("layer1.png", image.layers[1].values)
+        #cv2.imwrite("disp_layer0.png", image.layers[0].display_values)
+        #cv2.imwrite("disp_layer1.png", image.layers[1].display_values)
 
         qimage = QImage(image.top_layer.display_values, image.width, image.height, image.bytesPerLine, QImage.Format_RGBA8888)
         pixmap = QPixmap(qimage)

@@ -12,12 +12,12 @@ class Image:
         self.height = height
         self.bytesPerLine = width * self.channel_count
 
-        first_layer = Layer(self)
+        self.current_layer = first_layer = Layer(self)
         self.layers.append(first_layer)
         if image_name is not None:
             first_layer.load(cv2.imread(image_name))
 
-        self.current_layer = self.top_layer = self.newLayer()
+        self.top_layer = self.newLayer()
 
     def newLayer(self):
         bottom_layer = self.layers[-1]
@@ -25,6 +25,9 @@ class Image:
         bottom_layer.top_layer = new_layer
         self.layers.append(new_layer)
         return new_layer
+
+    def drawBrush(self, brush, x0, y0):
+        brush.draw(self.top_layer, x0, y0)
 
     def draw(self, brush, x0, y0):
         brush.draw(self.current_layer, x0, y0)
