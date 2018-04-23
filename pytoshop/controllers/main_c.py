@@ -28,7 +28,7 @@ class DrawingBoardController:
 
     def onMouseReleased(self, event):
         if self.main_c.command_pressed:
-            self.main_c.onMouseReleased(event.globalPos())
+            self.main_c.onMouseReleased()
         else:
             self.lastPoint = None
 
@@ -49,7 +49,7 @@ class MainController:
     def onControlReleased(self):
         self.command_pressed = False
         self.view.showArrowCursor()
-        
+
     def onMousePressed(self, pos):
         if self.command_pressed:
             self.start_board = self.view.drawing_board.pos()
