@@ -34,7 +34,7 @@ python3 ./start.py
 * **Pernille Dahl** - *Developper*
 * **Joey Thomas** - *Developper*
 * **Marc Villain** - *Developper*
-* **Sam West** - *Developper*
+* **Sam Westigard** - *Developper*
 
 ## License
 
