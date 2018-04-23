@@ -1,33 +1,43 @@
-import sys
-sys.path.append('../..')
-
 from pytoshop.objects.brush_o import Brush
 
 from math import sqrt
+
 
 class SquareBrush(Brush):
 
     def __init__(self):
         super().__init__()
 
-    def draw(self, image, x0, y0):
-        c = self.color
-        r = self.size // 2
-        h = self.hardness / 100
-        o = self.opacity / 100
+    def draw(self, layer, x0, y0):
+        color = self.color
+        radius = self.size // 2
+        hardness = self.hardness / 100
+        opacity = self.opacity / 100
 
         visited = []
 
-        for pos in range(0, r+1):
+        for pos in range(0, radius + 1):
             dx = pos
             dy = pos
-            d = pos / r
-            for x in range(x0-dx, x0+dy+1):
-                for y in range(y0-dx, y0+dy+1):
-                    if x >= 0 and x < image.width and y >= 0 and y < image.height and (x, y) not in visited:
-                        visited.append((x, y))
-                        a = 1 if d < h or h == 1 else (1-d)/(1-h) #exp(-7*d)
-                        a *= o
-                        for i in range(0, 3):
-                            val = image.values[y][x][i]*(1-a) + a*c[i]
-                            image.values[y][x][i] = val
+            d = pos / radius
+            a = 1 if d < hardness or hardness == 1 else (1 - d) / (1 - hardness)
+            a *= opacity
+
+            for p in [-pos, pos]:
+                # Right and left sides
+                if layer.canDrawAt(x0+p, y0):
+                    layer.draw(x0+p, y0, color, a)
+                for dy in range(1, pos+1):
+                    if layer.canDrawAt(x0+p, y0+dy):
+                        layer.draw(x0+p, y0+dy, color, a)
+                    if layer.canDrawAt(x0+p, y0-dy):
+                        layer.draw(x0+p, y0-dy, color, a)
+
+                # Top and bottom sides
+                if layer.canDrawAt(x0, y0+p):
+                    layer.draw(x0, y0+p, color, a)
+                for dx in range(1, pos):
+                    if layer.canDrawAt(x0+dx, y0+p):
+                        layer.draw(x0+dx, y0+p, color, a)
+                    if layer.canDrawAt(x0-dx, y0+p):
+                        layer.draw(x0-dx, y0+p, color, a)
