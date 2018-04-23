@@ -60,6 +60,8 @@ class MainView(QWidget):
             self.drawing_board.controller.switchLayer()
         elif event.key() == Qt.Key_C:
             self.drawing_board.controller.switchBrushColor()
+        elif event.key() == Qt.Key_B:
+            self.drawing_board.controller.switchBrush()
 
     def keyReleaseEvent(self, event):
         if event.key() == Qt.Key_Control:

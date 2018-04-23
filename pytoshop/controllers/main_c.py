@@ -55,19 +55,19 @@ class DrawingBoardController:
             self.view.brush.color = (255, 0, 0)
             self.test_switch_3 = 1
         elif self.test_switch_3 == 1:
-            self.view.brush.color = (0, 0, 0)
+            self.view.brush.color = (0, 0, 255)
             self.test_switch_3 = 2
         else:
             self.view.brush.color = (127, 255, 0)
             self.test_switch_3 = 0
 
-#    def switchBrush(self):
-#        if self.test_switch_2 == 0:
-#            self.view.brush = EraserBrush()
-#            self.test_switch_2 = 1
-#        else:
-#            self.view.brush = CircleBrush()
-#            self.test_switch_2 = 0
+    def switchBrush(self):
+        if self.test_switch_2 == 0:
+            self.view.brush = EraserBrush()
+            self.test_switch_2 = 1
+        else:
+            self.view.brush = CircleBrush()
+            self.test_switch_2 = 0
 
 
 class MainController:
