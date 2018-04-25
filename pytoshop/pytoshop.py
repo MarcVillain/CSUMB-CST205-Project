@@ -1,11 +1,11 @@
-import sys
+import sys  
 from PyQt5.QtWidgets import QApplication
-from pytoshop.views.main_v import MainView
+from pytoshop.views.main_v import MenuBar
 
 def start():
     app = QApplication(sys.argv)
 
-    main = MainView()
+    main = MenuBar()
     main.show()
 
     sys.exit(app.exec_())
