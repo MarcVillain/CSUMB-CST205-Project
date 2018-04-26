@@ -29,6 +29,7 @@ class DrawingBoardController:
         self.image = Image(width, height, image_name)
         self.view.displayImage(self.image)
 
+
 class MainController:
 
     def __init__(self, view):
