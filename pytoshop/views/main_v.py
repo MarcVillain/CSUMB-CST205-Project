@@ -1,7 +1,7 @@
 from pytoshop.controllers.main_c import MainController, DrawingBoardController
 from pytoshop.objects.brushes.circle_brush import CircleBrush
 
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QHBoxLayout, QDesktopWidget
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtCore import Qt, QEvent
 
@@ -53,7 +53,7 @@ class DrawingBoard(QLabel):
         self.controller.onWheel(event.angleDelta().y())
 
 
-class MainView(QWidget):
+class MainView(QMainWindow):
 
     def __init__(self):
         super().__init__()
