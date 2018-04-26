@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="03d0bbd5-2007-4644-8ccb-fab146872c70" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/pytoshop/controllers/main_c.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytoshop/controllers/main_c.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytoshop/pytoshop.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytoshop/pytoshop.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytoshop/views/main_v.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytoshop/views/main_v.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,8 +19,8 @@
       <file leaf-file-name="main_v.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pytoshop/views/main_v.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
-              <caret line="24" column="44" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
+            <state relative-caret-position="381">
+              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
             </state>
           </provider>
         </entry>
@@ -389,8 +387,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pytoshop/views/main_v.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="24" column="44" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
+        <state relative-caret-position="381">
+          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
         </state>
       </provider>
     </entry>
