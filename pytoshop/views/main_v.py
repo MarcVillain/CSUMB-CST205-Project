@@ -1,16 +1,20 @@
+from PyQt5 import QtWidgets
+
 from pytoshop.controllers.main_c import MainController, DrawingBoardController
 from pytoshop.objects.brushes.circle_brush import CircleBrush
 
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QHBoxLayout, QDesktopWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QHBoxLayout, QDesktopWidget, QVBoxLayout, QGroupBox, \
+    QBoxLayout
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtCore import Qt, QEvent
+from PyQt5.QtCore import Qt, QEvent, QRect
 
 import cv2
-
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QMenuBar, QToolBar
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
+
+from pytoshop.views.ToolBar import ToolBar
 
 
 class DrawingBoard(QLabel):
@@ -22,14 +26,15 @@ class DrawingBoard(QLabel):
         self.setMouseTracking(True)
 
     def display(self, image):
-        #cv2.imwrite("layer0.png", image.layers[0].values)
-        #cv2.imwrite("layer1.png", image.layers[1].values)
-        #cv2.imwrite("disp_layer0.png", image.layers[0].display_values)
-        #cv2.imwrite("disp_layer1.png", image.layers[1].display_values)
+        # cv2.imwrite("layer0.png", image.layers[0].values)
+        # cv2.imwrite("layer1.png", image.layers[1].values)
+        # cv2.imwrite("disp_layer0.png", image.layers[0].display_values)
+        # cv2.imwrite("disp_layer1.png", image.layers[1].display_values)
 
         new_width, new_height = image.width * image.scale, image.height * image.scale
 
-        qimage = QImage(image.top_layer.display_values, image.width, image.height, image.bytesPerLine, QImage.Format_RGBA8888)
+        qimage = QImage(image.top_layer.display_values, image.width, image.height, image.bytesPerLine,
+                        QImage.Format_RGBA8888)
         qimage = qimage.scaled(new_width, new_height)
         pixmap = QPixmap(qimage)
         pixmap = pixmap.scaled(new_width, new_height)
@@ -53,23 +58,32 @@ class DrawingBoard(QLabel):
         self.controller.onWheel(event.angleDelta().y())
 
 
-class MainView(QMainWindow):
+class MainView(QWidget):
+    WINDOW_HEIGHT = 1000
+    WINDOW_WIDTH = 700
+    LEFT_X = 0
+    LEFT_Y = 0
 
     def __init__(self):
         super().__init__()
-        self.controller = MainController(self)
-
+        # initialize main window
         self.setWindowTitle('Pytoshop')
-        self.initGeometry(650, 400)
+        self.setGeometry(self.LEFT_X, self.LEFT_Y, self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
+        main = QHBoxLayout()
+
+        self.menuBar = QMenuBar()
         self.initMenuBar()
-
-        self.drawing_board = DrawingBoard(self, 500, 500)
-
-        hlayout = QHBoxLayout()
-        hlayout.addWidget(self.drawing_board)
-        self.setLayout(hlayout)
-
-        self.show()
+        # get toolbar
+        self.toolbar = ToolBar(QBoxLayout.TopToBottom, self, QRect(0, 0, 50, 50))
+        # get drawing canvas
+        self.canvas = QVBoxLayout()
+        self.controller = MainController(self)
+        self.drawing_board = DrawingBoard(self, 950, 700)
+        self.canvas.addWidget(self.drawing_board)
+        # adding toolbar and canvas to main window
+        main.addLayout(self.toolbar)
+        main.addLayout(self.canvas)
+        self.setLayout(main)
 
     def initMenuBar(self):
         menuItems = {
@@ -85,21 +99,19 @@ class MainView(QMainWindow):
                 'Grayscale': {},
                 'Sepia': {},
                 'Negative': {}
-            },
-            'Toolbar': {
-                'Brush': {'icon': 'brush.png'},
-                'Select': {'icon': 'select.png'},
-                'Erase': {'icon': 'erase.png'},
-                'Color Picker': {'icon': 'color.png'},
-                'Text': {'icon': 'text1.png'},
-                'Magnifier': {'icon': 'zoom.png'}
             }
+            # 'Toolbar': {
+            #     'Brush': {'icon': 'brush.png'},
+            #     'Select': {'icon': 'select.png'},
+            #     'Erase': {'icon': 'erase.png'},
+            #     'Color Picker': {'icon': 'color.png'},
+            #     'Text': {'icon': 'text1.png'},
+            #     'Magnifier': {'icon': 'zoom.png'}
+            # }
         }
 
-        menuBar = self.menuBar()
-
         for title, subItems in menuItems.items():
-            menu = menuBar.addMenu(title)
+            menu = self.menuBar.addMenu(title)
 
             for key, value in subItems.items():
                 try:
