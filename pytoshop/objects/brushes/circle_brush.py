@@ -3,6 +3,7 @@ from pytoshop.objects.brush_o import Brush
 from math import floor
 import cv2
 import numpy as np
+import timeit
 
 
 class CircleBrush(Brush):
@@ -11,33 +12,31 @@ class CircleBrush(Brush):
         super().__init__()
 
     def draw(self, layer, point):
+        start = timeit.default_timer()
         x0, y0 = point
         radius = self.size // 2 - 1
         size = self.size * 2 - 1
         center = (size-1) // 2
 
+        # Create empty matrix with sharp circle in it
         mat = np.full((size, size, 4), 0, np.uint8)
         cv2.circle(mat, (center, center), radius, (0, 0, 0, 255), -1)
 
+        # Apply gaussian blur filter to the matrix
         gaussRadius = self.size - int((self.size - 3) * self.hardness / 100)
         gaussRadius += 1 - gaussRadius % 2
         mat = cv2.GaussianBlur(mat, (gaussRadius, gaussRadius), 0)
 
+        # Draw the brush on the layer
         r = size // 2
-        padTop = 0 if y0-r < 0 else y0-r
-        padBottom = layer.image.height if y0+r+1 > layer.image.height else y0+r+1
-        layer.display_values[padTop:padBottom, x0-r:x0+r+1] = mat[padTop-(y0-r):padBottom+(y0+r+1), 0:len(mat)]
 
-        # for j in range(len(mat)):
-        #     for i in range(len(mat[0])):
-        #         print(str(mat[j][i][3]).rjust(3), end=" ")
-        #     print()
+        distTop, distBottom = y0-r, y0+r+1
+        padTop, padBottom = max(0, distTop), min(layer.image.height-1, distBottom)
 
-        #for j in range(size):
-        #    for i in range(size):
-        #        x, y = x0+i-center, y0+j-center
-        #        if layer.canDrawAt(x, y):
-        #            layer.drawDisplay(x, y, mat[j][i])
+        distLeft, distRight = x0-r, x0+r+1
+        padLeft, padRight = max(0, distLeft), min(layer.image.width-1, distRight)
+
+        layer.display_values[padTop:padBottom, padLeft:padRight] = mat[padTop-distTop:size-(distBottom-padBottom), padLeft-distLeft:size-(distRight-padRight)]
 
 #        color = self.color
 #        radius = self.size // 2
@@ -76,4 +75,4 @@ class CircleBrush(Brush):
 #                        layer.draw(xC, yC, color, a)
 #                    if layer.canDrawAt(xD, yD):
 #                        layer.draw(xD, yD, color, a)
-#
+        print('---- ', start - timeit.default_timer(), 's ----')
