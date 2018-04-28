@@ -34,9 +34,12 @@ class DrawingBoardController:
             self.main_c.onMouseMove(event.globalPos())
         elif self.lastPoint is not None:  # If pressing
             endPoint = self.image.map(event.x(), event.y(), self.view.width(), self.view.height())
-            self.image.drawLine(self.view.brush, self.lastPoint, endPoint)
-            self.lastPoint = endPoint
-            self.view.display(self.image)
+            if self.lastPoint != endPoint:
+                #self.image.drawLine(self.view.brush, self.lastPoint, endPoint)
+                #self.lastPoint = endPoint
+                #self.view.display(self.image)
+                self.image.draw(self.view.brush, endPoint)
+                self.lastPoint = endPoint
         else:
             self.main_c.view.hideCursor()
             self.image.top_layer.clear()
@@ -89,7 +92,6 @@ class DrawingBoardController:
         self.image.top_layer.clear()
         self.view.display(self.image)
         self.main_c.view.showArrowCursor()
-
 
 
 class MainController:
