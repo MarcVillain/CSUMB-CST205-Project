@@ -29,7 +29,7 @@ class DrawingBoard(QLabel):
 
         new_width, new_height = image.width * image.scale, image.height * image.scale
 
-        qimage = QImage(image.top_layer.display_values, image.width, image.height, image.bytesPerLine, QImage.Format_RGBA8888)
+        qimage = QImage(image.top_layer.rgba_display, image.width, image.height, image.bytesPerLine, QImage.Format_RGBA8888)
         qimage = qimage.scaled(new_width, new_height)
         pixmap = QPixmap(qimage)
         pixmap = pixmap.scaled(new_width, new_height)

@@ -42,7 +42,7 @@ class DrawingBoardController:
                 self.lastPoint = endPoint
         else:
             self.main_c.view.hideCursor()
-            self.image.top_layer.clear()
+            #self.image.top_layer.clear()
             startPoint = self.image.map(event.x(), event.y(), self.view.width(), self.view.height())
             self.image.drawBrush(self.view.brush, startPoint)
             self.view.display(self.image)
@@ -89,7 +89,7 @@ class DrawingBoardController:
         self.view.display(self.image)
 
     def onLeave(self):
-        self.image.top_layer.clear()
+        #self.image.top_layer.clear()
         self.view.display(self.image)
         self.main_c.view.showArrowCursor()
 

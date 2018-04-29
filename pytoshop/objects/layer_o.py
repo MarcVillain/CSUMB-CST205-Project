@@ -1,65 +1,47 @@
 import cv2
 import numpy as np
 
+from pytoshop.utils.blend_u import normal, blend
 from pytoshop.utils.color import color_add_rgb
 from pytoshop.utils.color import color_add_rgba
 
 
 class Layer:
 
-    def __init__(self, image, bottom_layer=None):
+    def __init__(self, image, bottom_layer=None, top_layer=None):
         self.image = image
         self.bottom_layer = bottom_layer
-        self.top_layer = None
+        self.top_layer = top_layer
 
-        self.values = np.full((image.height, image.width, image.channel_count), 0, np.uint8)
-        self.display_values = np.copy(self.values if bottom_layer is None else bottom_layer.display_values)
+        self.blend_mode = normal
 
-    def load(self, image):
-        for j, row in enumerate(image):
-            for i, col in enumerate(row):
-                self.draw(i, j, (col[2], col[1], col[0]))
+        self.rgb = np.full((image.height, image.width, 3), 0, np.uint8)
+        self.alpha = np.full((image.height, image.width, 1), 0)
 
-    def clear(self):
-        self.values = np.full((self.image.height, self.image.width, self.image.channel_count), 0, np.uint8)
-        self.display_values = np.copy(self.bottom_layer.display_values)
-
-    def draw(self, x, y, color, alpha=1):
-        # Draw on layer
-        self.values[y][x] = color_add_rgb(self.values[y][x], color, alpha)
-
-        # Draw on display layer
-        self.display_values[y][x] = color_add_rgb(self.display_values[y][x], color, alpha)
-
-        # Draw on top layer
-        if self.top_layer is not None:
-            self.top_layer.drawDisplay(x, y, self.display_values[y][x])
-
-    def drawDisplay(self, x, y, color):
-        if self.values[y][x][3] == 255:
-            return
-
-        # Draw on display layer
-        new_color = color_add_rgba(color, self.values[y][x])
-        self.display_values[y][x] = new_color
-
-        # Draw on top layer
-        if self.top_layer is not None:
-            self.top_layer.drawDisplay(x, y, self.display_values[y][x])
-
-    def erase(self, x, y, alpha=1):
-        value = self.values[y][x]
-        if value[3] == 0:
-            return
-        self.values[y][x][3] *= 1 - alpha
-
-        if self.bottom_layer is not None:
-            self.display_values[y][x] = color_add_rgba(self.bottom_layer.display_values[y][x], self.values[y][x])
+        if bottom_layer is None:
+            self.rgba_display = np.full((image.height, image.width, 4), 0, np.uint8)
         else:
-            self.display_values[y][x] = self.values[y][x]
+            self.rgba_display = np.copy(bottom_layer.rgba_display)
 
-        if self.top_layer is not None:
-            self.top_layer.drawDisplay(x, y, self.display_values[y][x])
+    def draw(self, rgb, alpha, x0, y0):
+        size = len(rgb)
+        r = size // 2
 
-    def canDrawAt(self, x, y):
-        return 0 <= x < self.image.width and 0 <= y < self.image.height
+        distTop, distBottom = y0 - r, y0 + r + 1
+        padTop, padBottom = max(0, distTop), min(self.image.height - 1, distBottom)
+
+        distLeft, distRight = x0 - r, x0 + r + 1
+        padLeft, padRight = max(0, distLeft), min(self.image.width - 1, distRight)
+
+        top_color = self.rgb[padTop:padBottom, padLeft:padRight]
+        top_alpha = self.alpha[padTop:padBottom, padLeft:padRight]
+        bcg_color = rgb[padTop - distTop:size - (distBottom - padBottom), padLeft - distLeft:size - (distRight - padRight)]
+        bcg_alpha = alpha[padTop - distTop:size - (distBottom - padBottom), padLeft - distLeft:size - (distRight - padRight)]
+
+        self.rgb[padTop:padBottom, padLeft:padRight], self.alpha[padTop:padBottom, padLeft:padRight] = blend(top_color, top_alpha, bcg_color, bcg_alpha, self.blend_mode)
+
+        r, g, b = cv2.split(self.rgb)
+        a = (cv2.split(self.alpha)[0]*255).astype(np.uint8)
+
+        self.rgba_display = cv2.merge((r, g, b, a))
+
