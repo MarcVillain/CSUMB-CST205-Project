@@ -26,14 +26,18 @@ class CircleBrush(Brush):
         gaussRadius = self.size - int((self.size - 3) * self.hardness / 100)
         gaussRadius += 1 - gaussRadius % 2
         mat = cv2.GaussianBlur(mat, (gaussRadius, gaussRadius), 0)
+        print('---- A:', timeit.default_timer() - start, 's ----')
 
         r, g, b, a = cv2.split(mat)
         rgb = cv2.merge((r, g, b))
+        print('---- B:', timeit.default_timer() - start, 's ----')
 
+        # TODO: Find a better way of doing this by using native functions
         alpha = []
         for i, e in enumerate(a):
             alpha.append(np.vstack(e).tolist())
         alpha = np.array(alpha)
+        print('---- C:', timeit.default_timer() - start, 's ----')
 
         # Draw the brush on the layer
         layer.draw(rgb, alpha, x0, y0)
@@ -75,4 +79,4 @@ class CircleBrush(Brush):
 #                        layer.draw(xC, yC, color, a)
 #                    if layer.canDrawAt(xD, yD):
 #                        layer.draw(xD, yD, color, a)
-        print('---- ', timeit.default_timer() - start, 's ----')
+        print('---- D:', timeit.default_timer() - start, 's ----')

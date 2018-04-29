@@ -35,14 +35,13 @@ class DrawingBoardController:
         elif self.lastPoint is not None:  # If pressing
             endPoint = self.image.map(event.x(), event.y(), self.view.width(), self.view.height())
             if self.lastPoint != endPoint:
-                #self.image.drawLine(self.view.brush, self.lastPoint, endPoint)
-                #self.lastPoint = endPoint
-                #self.view.display(self.image)
+                self.image.drawLine(self.view.brush, self.lastPoint, endPoint)
+                self.lastPoint = endPoint
+                self.view.display(self.image)
                 self.image.draw(self.view.brush, endPoint)
                 self.lastPoint = endPoint
         else:
             self.main_c.view.hideCursor()
-            #self.image.top_layer.clear()
             startPoint = self.image.map(event.x(), event.y(), self.view.width(), self.view.height())
             self.image.drawBrush(self.view.brush, startPoint)
             self.view.display(self.image)

@@ -29,6 +29,7 @@ class Image:
         return new_layer
 
     def drawBrush(self, brush, point):
+        self.top_layer.clear()
         brush.draw(self.top_layer, point)
 
     def draw(self, brush, point):
