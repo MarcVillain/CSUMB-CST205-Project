@@ -1,3 +1,4 @@
+from pytoshop.objects.brush_o import Brush
 from pytoshop.objects.layer_o import Layer
 
 import cv2
@@ -14,10 +15,8 @@ class Image:
 
         self.scale, self.min_scale, self.max_scale = 1, 0.5, 2
 
-        self.current_layer = first_layer = Layer(self)
-        self.layers.append(first_layer)
-        if image_name is not None:
-            first_layer.load(cv2.imread(image_name))
+        self.current_layer = Layer(self)
+        self.layers.append(self.current_layer)
 
         self.top_layer = self.newLayer()
 
@@ -27,10 +26,6 @@ class Image:
         bottom_layer.top_layer = new_layer
         self.layers.append(new_layer)
         return new_layer
-
-    def drawBrush(self, brush, point):
-        self.top_layer.clear()
-        brush.draw(self.top_layer, point)
 
     def draw(self, brush, point):
         brush.draw(self.current_layer, point)

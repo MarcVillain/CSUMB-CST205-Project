@@ -19,14 +19,18 @@ class Layer:
 
     def clear(self):
         self.rgb = np.full((self.image.height, self.image.width, 3), 0, np.uint8)
-        self.alpha = np.full((self.image.height, self.image.width, 1), 0, np.float16)
+        self.alpha = np.full((self.image.height, self.image.width, 1), 0)
 
         if self.bottom_layer is None:
             self.rgba_display = np.full((self.image.height, self.image.width, 4), 0, np.uint8)
         else:
             self.rgba_display = np.copy(self.bottom_layer.rgba_display)
 
-    def draw(self, rgb, alpha, x0, y0):
+    def draw(self, rgba, x0, y0):
+        r, g, b, a = cv2.split(rgba)
+        rgb = cv2.merge((r, g, b))
+        alpha = a[..., None]
+
         size = len(rgb)
         r = size // 2
 

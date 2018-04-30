@@ -1,56 +1,10 @@
-from pytoshop.controllers.main_c import MainController, DrawingBoardController
-from pytoshop.objects.brushes.circle_brush import CircleBrush
-
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QHBoxLayout, QDesktopWidget
-from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtCore import Qt, QEvent
-
-import cv2
-
-
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QMenuBar, QToolBar
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QHBoxLayout, QDesktopWidget
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
 
-
-class DrawingBoard(QLabel):
-
-    def __init__(self, parent, width, height, image_name=None):
-        super().__init__(parent)
-        self.controller = DrawingBoardController(parent.controller, self, width, height, image_name)
-        self.brush = CircleBrush()
-        self.setMouseTracking(True)
-
-    def display(self, image):
-        #cv2.imwrite("layer0.png", image.layers[0].values)
-        #cv2.imwrite("layer1.png", image.layers[1].values)
-        #cv2.imwrite("disp_layer0.png", image.layers[0].display_values)
-        #cv2.imwrite("disp_layer1.png", image.layers[1].display_values)
-
-        new_width, new_height = image.width * image.scale, image.height * image.scale
-
-        qimage = QImage(image.top_layer.rgba_display, image.width, image.height, image.bytesPerLine, QImage.Format_RGBA8888)
-        qimage = qimage.scaled(new_width, new_height)
-        pixmap = QPixmap(qimage)
-        pixmap = pixmap.scaled(new_width, new_height)
-
-        self.setPixmap(pixmap)
-        self.setGeometry(self.x(), self.y(), new_width, new_height)
-
-    def mousePressEvent(self, event):
-        self.controller.onMousePressed(event)
-
-    def mouseMoveEvent(self, event):
-        self.controller.onMouseMove(event)
-
-    def mouseReleaseEvent(self, event):
-        self.controller.onMouseReleased(event)
-
-    def leaveEvent(self, event):
-        self.controller.onLeave()
-
-    def wheelEvent(self, event):
-        self.controller.onWheel(event.angleDelta().y())
+from pytoshop.controllers.main_c import MainController
+from pytoshop.views.drawing_board_v import DrawingBoard
 
 
 class MainView(QMainWindow):
@@ -120,37 +74,31 @@ class MainView(QMainWindow):
 
         # Center window
         frame = self.frameGeometry()
-        centerPoint = QDesktopWidget().availableGeometry().center()
-        frame.moveCenter(centerPoint)
+        center_point = QDesktopWidget().availableGeometry().center()
+        frame.moveCenter(center_point)
         self.move(frame.topLeft())
 
     # EVENTS #
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Control:
-            self.controller.onControlPressed()
-        elif event.key() == Qt.Key_A:
-            self.drawing_board.controller.switchLayer()
-        elif event.key() == Qt.Key_C:
-            self.drawing_board.controller.switchBrushColor()
-        elif event.key() == Qt.Key_B:
-            self.drawing_board.controller.switchBrush()
+            self.controller.onControlKeyPressed()
 
     def keyReleaseEvent(self, event):
         if event.key() == Qt.Key_Control:
-            self.controller.onControlReleased()
+            self.controller.onControlKeyReleased()
 
     def mousePressEvent(self, event):
-        self.controller.onMousePressed(event.globalPos())
+        self.controller.onMousePressed(event)
 
     def mouseReleaseEvent(self, event):
         self.controller.onMouseReleased()
 
     def mouseMoveEvent(self, event):
-        self.controller.onMouseMove(event.globalPos())
+        self.controller.onMouseMove(event)
 
     def wheelEvent(self, event):
-        self.drawing_board.wheelEvent(event)
+        self.controller.onWheel(event)
 
     # FUNCTIONS #
 
