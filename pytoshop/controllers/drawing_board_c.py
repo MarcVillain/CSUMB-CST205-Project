@@ -12,24 +12,27 @@ class DrawingBoardController:
         self.image = Image(width, height, image_name)
         self.tool = CircleBrush()
 
+        self.lastPos = None
         self.mouse_pressed = False
 
     def onMousePressed(self, event):
-        self.mouse_pressed = True
-        pos = event.pos()
-
-        self.tool.onMousePressed(self, pos.x(), pos.y())
+        if not self.main_c.control_pressed:
+            self.mouse_pressed = True
+            self.lastPos = self.image.map(event.x(), event.y(), self.view.width(), self.view.height())
+            self.tool.onMousePressed(self, self.lastPos[0], self.lastPos[1])
 
     def onMouseMove(self, event):
-        pos = event.pos()
-
-        self.tool.onMouseMove(self, pos.x(), pos.y())
+        if not self.main_c.control_pressed:
+            pos = self.image.map(event.x(), event.y(), self.view.width(), self.view.height())
+            if self.lastPos is None:
+                self.lastPos = pos
+            self.tool.onMouseMove(self, self.lastPos[0], self.lastPos[1], pos[0], pos[1])
+            self.lastPos = pos
 
     def onMouseReleased(self, event):
-        self.mouse_pressed = False
-        pos = event.pos()
-
-        self.tool.onMouseReleased(self, pos.x(), pos.y())
+        if not self.main_c.control_pressed:
+            self.mouse_pressed = False
+            self.tool.onMouseReleased(self)
 
     def onWheel(self, angleDeltaY):
         self.image.scale += angleDeltaY * 0.01

@@ -1,7 +1,9 @@
+import cv2
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QLabel
 
 from pytoshop.controllers.drawing_board_c import DrawingBoardController
+from pytoshop.utils.color_u import rgb_to_rgba
 
 
 class DrawingBoard(QLabel):
@@ -14,11 +16,11 @@ class DrawingBoard(QLabel):
         self.setMouseTracking(True)
 
     def refresh(self):
-        #cv2.imwrite("layer0.png", image.layers[0].values)
-        #cv2.imwrite("layer1.png", image.layers[1].values)
-        #cv2.imwrite("disp_layer0.png", image.layers[0].display_values)
-        #cv2.imwrite("disp_layer1.png", image.layers[1].display_values)
         image = self.controller.image
+        #cv2.imwrite("layer0.png", rgb_to_rgba(image.layers[0].rgb, image.layers[0].alpha))
+        #cv2.imwrite("layer1.png", rgb_to_rgba(image.layers[1].rgb, image.layers[1].alpha))
+        #cv2.imwrite("disp_layer0.png", image.layers[0].rgba_display)
+        #cv2.imwrite("disp_layer1.png", image.layers[1].rgba_display)
 
         new_width, new_height = image.width * image.scale, image.height * image.scale
 
