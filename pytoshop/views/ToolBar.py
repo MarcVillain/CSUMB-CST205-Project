@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QBoxLayout, QPushButton
 
 
 class ToolBar(QBoxLayout):
-    ICON_DIRECTORY = 'pytoshop/views/images/toolBarImages/'
+    ICON_DIRECTORY = 'pytoshop/views/images/'
     buttons = []
 
     def __init__(self, QBoxLayout_Direction, QWidget, QRect):

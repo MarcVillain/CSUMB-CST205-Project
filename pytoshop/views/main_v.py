@@ -88,17 +88,19 @@ class MainView(QWidget):
     def initMenuBar(self):
         menuItems = {
             'File': {
-                'New': {'icon': 'new.png'},
-                'Open': {'icon': 'open.png'},
-                'Save': {'icon': 'save.png'},
-                'Save As': {'icon': 'saveAs.png'},
-                'Export': {'icon': 'export.png'},
+                'New': {'icon': 'new.png', 'trigger': self.doNothing},
+                'Open': {'icon': 'open.png', 'trigger': self.doNothing},
+                'Save': {'icon': 'save.png', 'trigger': self.doNothing},
+                'Save As': {'icon': 'saveAs.png', 'trigger': self.doNothing},
+                'Export': {'icon': 'export.png', 'trigger': self.doNothing},
                 'Exit': {'icon': 'exit.png', 'trigger': self.close}
             },
-            'Filters': {
-                'Grayscale': {},
-                'Sepia': {},
-                'Negative': {}
+            'Layer': {
+                'Filters': {
+                    'Grayscale': {'trigger': self.doNothing},
+                    'Sepia': {'trigger': self.doNothing},
+                    'Negative': {'trigger': self.doNothing}
+                }
             }
             # 'Toolbar': {
             #     'Brush': {'icon': 'brush.png'},
@@ -110,8 +112,11 @@ class MainView(QWidget):
             # }
         }
 
+        self.addMenuItems(self.menuBar, menuItems)
+
+    def addMenuItems(self, menuBar, menuItems):
         for title, subItems in menuItems.items():
-            menu = self.menuBar.addMenu(title)
+            menu = menuBar.addMenu(title)
 
             for key, value in subItems.items():
                 try:
@@ -121,10 +126,13 @@ class MainView(QWidget):
 
                 try:
                     menu.triggered.connect(value['trigger'])
+                    menu.addAction(action)
                 except:
-                    pass
+                    self.addMenuItems(menu, subItems)
 
-                menu.addAction(action)
+    def doNothing(self):
+        print('Do nothing')
+        pass
 
     def initGeometry(self, width, height):
         # Set size
