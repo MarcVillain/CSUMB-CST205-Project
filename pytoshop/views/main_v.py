@@ -14,7 +14,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAc
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 
-from pytoshop.views.ToolBar import ToolBar
+from pytoshop.views.tool_bar_v import ToolBar
 
 
 class DrawingBoard(QLabel):
