@@ -31,6 +31,10 @@ class Layer:
 
         self.updateDisplay(0, self.image.height, 0, self.image.width)
 
+    def applyFilter(self, filter_func):
+        self.rgb = filter_func(self.rgb)
+        self.updateDisplay(0, self.image.height, 0, self.image.width)
+
     def draw(self, rgba, x0, y0):
         rgb, alpha = rgba_to_rgb(rgba)
 
