@@ -1,65 +1,97 @@
 import cv2
 import numpy as np
 
-from pytoshop.utils.color import color_add_rgb
-from pytoshop.utils.color import color_add_rgba
+from pytoshop.utils.blend_u import normal, blend
+from pytoshop.utils.color_u import color_add_rgb, rgb_to_rgba, rgba_to_rgb
+from pytoshop.utils.color_u import color_add_rgba
 
 
 class Layer:
 
-    def __init__(self, image, bottom_layer=None):
+    def __init__(self, image, bottom_layer=None, top_layer=None):
         self.image = image
         self.bottom_layer = bottom_layer
-        self.top_layer = None
+        self.top_layer = top_layer
 
-        self.values = np.full((image.height, image.width, image.channel_count), 0, np.uint8)
-        self.display_values = np.copy(self.values if bottom_layer is None else bottom_layer.display_values)
+        self.blend_mode = normal
+        self.name = 'None'
 
-    def load(self, image):
-        for j, row in enumerate(image):
-            for i, col in enumerate(row):
-                self.draw(i, j, (col[2], col[1], col[0]))
+        self.clear()
+
+    def fill(self, color):
+        self.rgb = np.full((self.image.height, self.image.width, 3), color, np.uint8)
+        self.alpha = np.full((self.image.height, self.image.width, 1), 1.)
+        
+        self.updateDisplay(0, self.image.height, 0, self.image.width)
 
     def clear(self):
-        self.values = np.full((self.image.height, self.image.width, self.image.channel_count), 0, np.uint8)
-        self.display_values = np.copy(self.bottom_layer.display_values)
+        self.rgb = np.full((self.image.height, self.image.width, 3), 0, np.uint8)
+        self.alpha = np.full((self.image.height, self.image.width, 1), 0.)
+        self.rgba_display = np.full((self.image.height, self.image.width, 4), 0, np.uint8)
 
-    def draw(self, x, y, color, alpha=1):
-        # Draw on layer
-        self.values[y][x] = color_add_rgb(self.values[y][x], color, alpha)
+        self.updateDisplay(0, self.image.height, 0, self.image.width)
 
-        # Draw on display layer
-        self.display_values[y][x] = color_add_rgb(self.display_values[y][x], color, alpha)
+    def draw(self, rgba, x0, y0):
+        rgb, alpha = rgba_to_rgb(rgba)
 
-        # Draw on top layer
-        if self.top_layer is not None:
-            self.top_layer.drawDisplay(x, y, self.display_values[y][x])
+        size = len(rgb)
+        r = size // 2
 
-    def drawDisplay(self, x, y, color):
-        if self.values[y][x][3] == 255:
-            return
+        distTop, distBottom = y0 - r, y0 + r + 1
+        padTop, padBottom = max(0, distTop), min(self.image.height, distBottom)
 
-        # Draw on display layer
-        new_color = color_add_rgba(color, self.values[y][x])
-        self.display_values[y][x] = new_color
+        distLeft, distRight = x0 - r, x0 + r + 1
+        padLeft, padRight = max(0, distLeft), min(self.image.width, distRight)
 
-        # Draw on top layer
-        if self.top_layer is not None:
-            self.top_layer.drawDisplay(x, y, self.display_values[y][x])
+        top_color = rgb[padTop - distTop:size - (distBottom - padBottom), padLeft - distLeft:size - (distRight - padRight)]
+        top_alpha = alpha[padTop - distTop:size - (distBottom - padBottom), padLeft - distLeft:size - (distRight - padRight)]
+        bcg_color = self.rgb[padTop:padBottom, padLeft:padRight]
+        bcg_alpha = self.alpha[padTop:padBottom, padLeft:padRight]
 
-    def erase(self, x, y, alpha=1):
-        value = self.values[y][x]
-        if value[3] == 0:
-            return
-        self.values[y][x][3] *= 1 - alpha
+        new_rgb, new_alpha = blend(top_color, top_alpha, bcg_color, bcg_alpha)
 
-        if self.bottom_layer is not None:
-            self.display_values[y][x] = color_add_rgba(self.bottom_layer.display_values[y][x], self.values[y][x])
+        self.rgb[padTop:padBottom, padLeft:padRight] = new_rgb
+        self.alpha[padTop:padBottom, padLeft:padRight] = new_alpha
+
+        self.updateDisplay(padTop, padBottom, padLeft, padRight)
+
+    def drawLine(self, rgba, x0, y0, x1, y1):
+        """
+        Bresenham's algorithm
+        """
+        # TODO: Generate and blur a real line instead of doing something like this...
+        dx = x1 - x0
+        dy = y1 - y0
+
+        xsign = 1 if dx > 0 else -1
+        ysign = 1 if dy > 0 else -1
+
+        dx = abs(dx)
+        dy = abs(dy)
+
+        if dx > dy:
+            xx, xy, yx, yy = xsign, 0, 0, ysign
         else:
-            self.display_values[y][x] = self.values[y][x]
+            dx, dy = dy, dx
+            xx, xy, yx, yy = 0, ysign, xsign, 0
+
+        D = 2 * dy - dx
+        y = 0
+
+        for x in range(dx + 1):
+            self.image.current_layer.draw(rgba, x0 + x * xx + y * yx, y0 + x * xy + y * yy)
+            if D >= 0:
+                y += 1
+                D -= 2 * dx
+            D += 2 * dy
+
+    def updateDisplay(self, padTop, padBottom, padLeft, padRight):
+        if self.bottom_layer is not None:
+            rgb_bottom, alpha_bottom = rgba_to_rgb(self.bottom_layer.rgba_display[padTop:padBottom, padLeft:padRight])
+            new_rgb, new_alpha = blend(self.rgb[padTop:padBottom, padLeft:padRight], self.alpha[padTop:padBottom, padLeft:padRight], rgb_bottom, alpha_bottom, self.blend_mode)
+            self.rgba_display[padTop:padBottom, padLeft:padRight] = rgb_to_rgba(new_rgb, new_alpha)
+        else:
+            self.rgba_display[padTop:padBottom, padLeft:padRight] = rgb_to_rgba(self.rgb[padTop:padBottom, padLeft:padRight], self.alpha[padTop:padBottom, padLeft:padRight])
 
         if self.top_layer is not None:
-            self.top_layer.drawDisplay(x, y, self.display_values[y][x])
-
-    def canDrawAt(self, x, y):
-        return 0 <= x < self.image.width and 0 <= y < self.image.height
+            self.top_layer.updateDisplay(padTop, padBottom, padLeft, padRight)
