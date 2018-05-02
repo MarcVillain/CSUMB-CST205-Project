@@ -135,6 +135,8 @@ class MainView(QMainWindow):
             self.drawing_board.controller.switchBrushColor()
         elif event.key() == Qt.Key_B:
             self.drawing_board.controller.switchBrush()
+        elif event.key() == Qt.Key_T:
+            self.drawing_board.controller.switchText()
 
     def keyReleaseEvent(self, event):
         if event.key() == Qt.Key_Control:
