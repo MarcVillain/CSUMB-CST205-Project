@@ -125,7 +125,7 @@ class MainView(QWidget):
                     action = QAction('&' + key, menu)
 
                 try:
-                    menu.triggered.connect(value['trigger'])
+                    action.triggered.connect(value['trigger'])
                     menu.addAction(action)
                 except:
                     self.addMenuItems(menu, subItems)
