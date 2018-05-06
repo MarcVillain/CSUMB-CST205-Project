@@ -19,13 +19,14 @@ class Image:
         self.current_layer.fill([255, 255, 255])
         self.layers.append(self.current_layer)
 
-        self.top_layer = self.newLayer()
+        self.top_layer = self.newLayer(False)
 
-    def newLayer(self):
+    def newLayer(self, visible=True):
         bottom_layer = self.layers[-1]
         new_layer = Layer(self, bottom_layer)
         bottom_layer.top_layer = new_layer
-        self.layers.append(new_layer)
+        if visible:
+            self.layers.append(new_layer)
         return new_layer
 
     def map(self, x0, y0, width, height):

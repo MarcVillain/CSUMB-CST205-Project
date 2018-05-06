@@ -14,44 +14,54 @@ class MainView(QMainWindow):
         self.controller = MainController(self)
 
         self.setWindowTitle('Pytoshop')
-        self.initGeometry(650, 400)
+        self.setGeometry(self.LEFT_X, self.LEFT_Y, self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
+        main = QHBoxLayout()
+
+        self.menuBar = QMenuBar()
         self.initMenuBar()
-
-        self.drawing_board = DrawingBoard(self, 500, 500)
-
-        hlayout = QHBoxLayout()
-        hlayout.addWidget(self.drawing_board)
-        self.setLayout(hlayout)
-
-        self.show()
+        # get toolbar
+        self.toolbar = ToolBar(QBoxLayout.TopToBottom, self, QRect(0, 0, 50, 50))
+        # get drawing canvas
+        self.canvas = QHBoxLayout()
+        self.controller = MainController(self)
+        self.drawing_board = DrawingBoard(self, 950, 700)
+        self.canvas.addWidget(self.drawing_board)
+        self.canvas.addWidget(Layers(self.drawing_board.controller.image))
+        # adding toolbar and canvas to main window
+        main.addLayout(self.toolbar)
+        main.addLayout(self.canvas)
+        self.setLayout(main)
 
     def initMenuBar(self):
         menuItems = {
             'File': {
-                'New': {'icon': 'new.png'},
-                'Open': {'icon': 'open.png'},
-                'Save': {'icon': 'save.png'},
-                'Save As': {'icon': 'saveAs.png'},
-                'Export': {'icon': 'export.png'},
+                'New': {'icon': 'new.png', 'trigger': self.doNothing},
+                'Open': {'icon': 'open.png', 'trigger': self.doNothing},
+                'Save': {'icon': 'save.png', 'trigger': self.doNothing},
+                'Save As': {'icon': 'saveAs.png', 'trigger': self.doNothing},
+                'Export': {'icon': 'export.png', 'trigger': self.doNothing},
                 'Exit': {'icon': 'exit.png', 'trigger': self.close}
             },
-            'Filters': {
-                'Grayscale': {},
-                'Sepia': {},
-                'Negative': {}
-            },
-            'Toolbar': {
-                'Brush': {'icon': 'brush.png'},
-                'Select': {'icon': 'select.png'},
-                'Erase': {'icon': 'erase.png'},
-                'Color Picker': {'icon': 'color.png'},
-                'Text': {'icon': 'text1.png'},
-                'Magnifier': {'icon': 'zoom.png'}
+            'Layer': {
+                'Filters': {
+                    'Grayscale': {'trigger': self.doNothing},
+                    'Sepia': {'trigger': self.doNothing},
+                    'Negative': {'trigger': self.doNothing}
+                }
             }
+            # 'Toolbar': {
+            #     'Brush': {'icon': 'brush.png'},
+            #     'Select': {'icon': 'select.png'},
+            #     'Erase': {'icon': 'erase.png'},
+            #     'Color Picker': {'icon': 'color.png'},
+            #     'Text': {'icon': 'text1.png'},
+            #     'Magnifier': {'icon': 'zoom.png'}
+            # }
         }
 
-        menuBar = self.menuBar()
+        self.addMenuItems(self.menuBar, menuItems)
 
+    def addMenuItems(self, menuBar, menuItems):
         for title, subItems in menuItems.items():
             menu = menuBar.addMenu(title)
 
@@ -62,11 +72,14 @@ class MainView(QMainWindow):
                     action = QAction('&' + key, menu)
 
                 try:
-                    menu.triggered.connect(value['trigger'])
+                    action.triggered.connect(value['trigger'])
+                    menu.addAction(action)
                 except:
-                    pass
+                    self.addMenuItems(menu, subItems)
 
-                menu.addAction(action)
+    def doNothing(self):
+        print('Do nothing')
+        pass
 
     def initGeometry(self, width, height):
         # Set size
