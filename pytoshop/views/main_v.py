@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAc
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 
+from pytoshop.views.layers_v import Layers
 from pytoshop.views.tool_bar_v import ToolBar
 
 
@@ -76,10 +77,11 @@ class MainView(QWidget):
         # get toolbar
         self.toolbar = ToolBar(QBoxLayout.TopToBottom, self, QRect(0, 0, 50, 50))
         # get drawing canvas
-        self.canvas = QVBoxLayout()
+        self.canvas = QHBoxLayout()
         self.controller = MainController(self)
         self.drawing_board = DrawingBoard(self, 950, 700)
         self.canvas.addWidget(self.drawing_board)
+        self.canvas.addWidget(Layers(self.drawing_board.controller.image))
         # adding toolbar and canvas to main window
         main.addLayout(self.toolbar)
         main.addLayout(self.canvas)

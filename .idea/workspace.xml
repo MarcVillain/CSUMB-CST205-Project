@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="03d0bbd5-2007-4644-8ccb-fab146872c70" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytoshop/views/ToolBar.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytoshop/views/tool_bar_v.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pytoshop/objects/image_o.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytoshop/objects/image_o.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pytoshop/views/main_v.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytoshop/views/main_v.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,24 +14,27 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Project$start.coverage" NAME="start Coverage Results" MODIFIED="1525294421832" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Project$start.coverage" NAME="start Coverage Results" MODIFIED="1525650509540" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main_v.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pytoshop/views/main_v.py">
+      <file leaf-file-name="layers_v.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pytoshop/views/layers_v.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="514">
-              <caret line="164" lean-forward="true" selection-start-line="164" selection-end-line="164" />
+            <state relative-caret-position="180">
+              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tool_bar_v.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pytoshop/views/tool_bar_v.py">
+      <file leaf-file-name="image_o.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pytoshop/objects/image_o.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+            <state relative-caret-position="390">
+              <caret line="28" column="12" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -65,13 +68,15 @@
         <option value="$PROJECT_DIR$/pytoshop/objects/brushes/circle_brush.py" />
         <option value="$PROJECT_DIR$/pytoshop/objects/brushes/eraser_brush.py" />
         <option value="$PROJECT_DIR$/pytoshop/objects/brushes/square_brush.py" />
-        <option value="$PROJECT_DIR$/pytoshop/objects/image_o.py" />
         <option value="$PROJECT_DIR$/pytoshop/pytoshop.py" />
         <option value="$PROJECT_DIR$/pytoshop/utils/menu_u.py" />
         <option value="$PROJECT_DIR$/pytoshop/controllers/main_c.py" />
         <option value="$PROJECT_DIR$/pytoshop/views/ToolBar.py" />
-        <option value="$PROJECT_DIR$/pytoshop/views/main_v.py" />
         <option value="$PROJECT_DIR$/pytoshop/views/tool_bar_v.py" />
+        <option value="$PROJECT_DIR$/pytoshop/views/main_v.py" />
+        <option value="$PROJECT_DIR$/pytoshop/objects/image_o.py" />
+        <option value="$PROJECT_DIR$/pytoshop/views/layer_thumbnails_v.py" />
+        <option value="$PROJECT_DIR$/pytoshop/views/layers_v.py" />
       </list>
     </option>
   </component>
@@ -81,10 +86,9 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="y" value="22" />
+  <component name="ProjectFrameBounds" fullScreen="true">
     <option name="width" value="1440" />
-    <option name="height" value="813" />
+    <option name="height" value="900" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -117,6 +121,12 @@
               <item name="Project" type="462c0819:PsiDirectoryNode" />
               <item name="pytoshop" type="462c0819:PsiDirectoryNode" />
               <item name="objects" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Project" type="462c0819:PsiDirectoryNode" />
+              <item name="pytoshop" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Project" type="b2602c69:ProjectViewProjectNode" />
@@ -193,7 +203,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="813" extended-state="0" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -201,7 +211,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Python Console" order="10" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.37753722" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3773585" />
       <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22777778" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
@@ -231,13 +241,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pytoshop/views/main_v.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="855">
-          <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pytoshop/controllers/main_c.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1620">
@@ -461,31 +464,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pytoshop/utils/color.py" />
-    <entry file="file://$PROJECT_DIR$/pytoshop/objects/layer_o.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-24">
-          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pytoshop/utils/menu_u.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" lean-forward="true" selection-start-line="8" selection-start-column="8" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pytoshop/objects/image_o.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pytoshop/controllers/main_c.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
         </state>
       </provider>
     </entry>
@@ -496,17 +478,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pytoshop/views/main_v.py">
+    <entry file="file://$PROJECT_DIR$/pytoshop/objects/layer_o.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="514">
-          <caret line="164" lean-forward="true" selection-start-line="164" selection-end-line="164" />
+        <state relative-caret-position="360">
+          <caret line="24" column="71" selection-start-line="24" selection-start-column="71" selection-end-line="24" selection-end-column="71" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pytoshop/views/tool_bar_v.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+        <state relative-caret-position="165">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pytoshop/views/main_v.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pytoshop/controllers/main_c.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pytoshop/objects/image_o.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="28" column="12" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pytoshop/views/layers_v.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
