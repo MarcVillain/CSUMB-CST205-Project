@@ -19,13 +19,14 @@ class Image:
         if image_name is not None:
             first_layer.load(cv2.imread(image_name))
 
-        self.top_layer = self.newLayer()
+        self.top_layer = self.newLayer(False)
 
-    def newLayer(self):
+    def newLayer(self, visible=True):
         bottom_layer = self.layers[-1]
         new_layer = Layer(self, bottom_layer)
         bottom_layer.top_layer = new_layer
-        self.layers.append(new_layer)
+        if visible:
+            self.layers.append(new_layer)
         return new_layer
 
     def drawBrush(self, brush, point):
