@@ -1,85 +1,40 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QHBoxLayout, QDesktopWidget
+from PyQt5.QtWidgets import QHBoxLayout, QDesktopWidget, QWidget, QGridLayout
 from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
 
 from pytoshop.controllers.main_c import MainController
 from pytoshop.views.drawing_board_v import DrawingBoard
+from pytoshop.views.layers_v import Layers
+from pytoshop.views.menu_bar_v import MenuBar
+from pytoshop.views.tool_bar_v import ToolBar
 
 
-class MainView(QMainWindow):
+class MainView(QWidget):
 
     def __init__(self):
         super().__init__()
         self.controller = MainController(self)
 
         self.setWindowTitle('Pytoshop')
-        self.setGeometry(self.LEFT_X, self.LEFT_Y, self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
-        main = QHBoxLayout()
+        self.initGeometry(650, 400)
 
-        self.menuBar = QMenuBar()
-        self.initMenuBar()
-        # get toolbar
-        self.toolbar = ToolBar(QBoxLayout.TopToBottom, self, QRect(0, 0, 50, 50))
-        # get drawing canvas
-        self.canvas = QHBoxLayout()
-        self.controller = MainController(self)
-        self.drawing_board = DrawingBoard(self, 950, 700)
-        self.canvas.addWidget(self.drawing_board)
-        self.canvas.addWidget(Layers(self.drawing_board.controller.image))
-        # adding toolbar and canvas to main window
-        main.addLayout(self.toolbar)
-        main.addLayout(self.canvas)
-        self.setLayout(main)
+        self.menuBar = MenuBar(self)
 
-    def initMenuBar(self):
-        menuItems = {
-            'File': {
-                'New': {'icon': 'new.png', 'trigger': self.doNothing},
-                'Open': {'icon': 'open.png', 'trigger': self.doNothing},
-                'Save': {'icon': 'save.png', 'trigger': self.doNothing},
-                'Save As': {'icon': 'saveAs.png', 'trigger': self.doNothing},
-                'Export': {'icon': 'export.png', 'trigger': self.doNothing},
-                'Exit': {'icon': 'exit.png', 'trigger': self.close}
-            },
-            'Layer': {
-                'Filters': {
-                    'Grayscale': {'trigger': self.doNothing},
-                    'Sepia': {'trigger': self.doNothing},
-                    'Negative': {'trigger': self.doNothing}
-                }
-            }
-            # 'Toolbar': {
-            #     'Brush': {'icon': 'brush.png'},
-            #     'Select': {'icon': 'select.png'},
-            #     'Erase': {'icon': 'erase.png'},
-            #     'Color Picker': {'icon': 'color.png'},
-            #     'Text': {'icon': 'text1.png'},
-            #     'Magnifier': {'icon': 'zoom.png'}
-            # }
-        }
+        self.toolbar = ToolBar(self, 'pytoshop/views/images/')
+        self.drawing_board = DrawingBoard(self, 500, 500)
+        self.layers = Layers(self.drawing_board.controller.image)
 
-        self.addMenuItems(self.menuBar, menuItems)
+        layout = QGridLayout()
+        layout.addWidget(self.toolbar, 1, 1, 8, 1)
+        invisible = QWidget()
+        invisible.hide()
+        layout.addWidget(invisible, 1, 2, 8, 8)
+        layout.addWidget(self.layers, 1, 10, 8, 1)
 
-    def addMenuItems(self, menuBar, menuItems):
-        for title, subItems in menuItems.items():
-            menu = menuBar.addMenu(title)
+        layout.setContentsMargins(0, 0, 0, 0)
 
-            for key, value in subItems.items():
-                try:
-                    action = QAction(QIcon('pytoshop/views/images/' + value['icon']), '&' + key, menu)
-                except:
-                    action = QAction('&' + key, menu)
-
-                try:
-                    action.triggered.connect(value['trigger'])
-                    menu.addAction(action)
-                except:
-                    self.addMenuItems(menu, subItems)
-
-    def doNothing(self):
-        print('Do nothing')
-        pass
+        self.setLayout(layout)
 
     def initGeometry(self, width, height):
         # Set size

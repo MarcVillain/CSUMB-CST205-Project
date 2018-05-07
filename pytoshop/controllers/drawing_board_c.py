@@ -23,6 +23,7 @@ class DrawingBoardController:
 
     def onMouseMove(self, event):
         if not self.main_c.control_pressed:
+            self.main_c.view.layers.refresh(self.image.current_layer.pos)
             pos = self.image.map(event.x(), event.y(), self.view.width(), self.view.height())
             if self.lastPos is None:
                 self.lastPos = pos

@@ -15,7 +15,7 @@ class Image:
 
         self.scale, self.min_scale, self.max_scale = 1, 0.5, 2
 
-        self.current_layer = Layer(self)
+        self.current_layer = Layer(self, pos=0)
         self.current_layer.fill([255, 255, 255])
         self.layers.append(self.current_layer)
 

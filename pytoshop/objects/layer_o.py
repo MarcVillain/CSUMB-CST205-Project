@@ -8,7 +8,8 @@ from pytoshop.utils.color_u import color_add_rgba
 
 class Layer:
 
-    def __init__(self, image, bottom_layer=None, top_layer=None):
+    def __init__(self, image, bottom_layer=None, top_layer=None, pos=-1):
+        self.pos = pos
         self.image = image
         self.bottom_layer = bottom_layer
         self.top_layer = top_layer

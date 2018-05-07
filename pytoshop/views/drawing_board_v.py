@@ -1,4 +1,5 @@
 import cv2
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QLabel
 
@@ -14,6 +15,7 @@ class DrawingBoard(QLabel):
         self.controller = DrawingBoardController(parent.controller, self, width, height, image_name)
         self.refresh()
         self.setMouseTracking(True)
+        self.setGeometry(parent.width()//2-width//2, parent.height()//2-height//2, width, height)
 
     def refresh(self):
         image = self.controller.image
