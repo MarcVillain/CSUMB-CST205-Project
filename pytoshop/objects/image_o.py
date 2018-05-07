@@ -1,7 +1,4 @@
-from pytoshop.objects.brush_o import Brush
 from pytoshop.objects.layer_o import Layer
-
-import cv2
 
 
 class Image:

@@ -1,6 +1,6 @@
-from pytoshop.objects.brushes.circle_brush import CircleBrush
-from pytoshop.objects.brushes.eraser_brush import EraserBrush
 from pytoshop.objects.image_o import Image
+from pytoshop.objects.tools.brush_o import Brush
+from pytoshop.objects.tools.pencil_o import Pencil
 
 
 class DrawingBoardController:
@@ -10,7 +10,7 @@ class DrawingBoardController:
         self.view = view
 
         self.image = Image(width, height, image_name)
-        self.tool = CircleBrush()
+        self.tool = Pencil()
 
         self.lastPos = None
         self.mouse_pressed = False

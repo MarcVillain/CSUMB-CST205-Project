@@ -1,3 +1,6 @@
+import cv2
+import numpy as np
+
 from pytoshop.objects.tool_o import Tool
 
 
@@ -29,4 +32,18 @@ class Brush(Tool):
         pass
 
     def generate(self):
-        pass
+        radius = self.size // 2 - 1
+        size = self.size * 2 - 1
+        center = (size - 1) // 2
+
+        # Create empty matrix with sharp circle in it
+        mat = np.full((size, size, 4), 0, np.uint8)
+        r, g, b = self.color
+        cv2.circle(mat, (center, center), radius, (r, g, b, 255 * self.opacity / 100), -1)
+
+        # Apply gaussian blur filter to the matrix
+        gaussRadius = self.size - int((self.size - 3) * self.hardness / 100)
+        gaussRadius += 1 - gaussRadius % 2
+        mat = cv2.GaussianBlur(mat, (gaussRadius, gaussRadius), 0)
+
+        return mat
