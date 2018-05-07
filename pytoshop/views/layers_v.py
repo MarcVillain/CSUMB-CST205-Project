@@ -1,7 +1,8 @@
 import cv2
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QListWidget, QHBoxLayout, QLabel, QListWidgetItem, QWidget, QListView
+from PyQt5.QtWidgets import QListWidget, QHBoxLayout, QLabel, QListWidgetItem, QWidget, QListView, QFrame, \
+    QAbstractItemView
 
 from pytoshop.utils.color_u import rgb_to_rgba
 
@@ -57,6 +58,8 @@ class LayersView(QListWidget):
             self.layers.append(item)
 
         self.setFixedWidth(150)
+        self.setCurrentRow(0)
+        self.setSelectionMode(QAbstractItemView.SingleSelection)
 
     def refresh(self, i):
         self.layers[i].refresh()
