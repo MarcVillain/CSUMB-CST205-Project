@@ -37,7 +37,6 @@ class Layer:
         self.updateDisplay(0, self.image.height, 0, self.image.width)
 
     def draw(self, rgba, x0, y0):
-        print('x0:', x0, 'y0: ', y0)
         rgb, alpha = rgba_to_rgb(rgba)
 
         size = len(rgb)
