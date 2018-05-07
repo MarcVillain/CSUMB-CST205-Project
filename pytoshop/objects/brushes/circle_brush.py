@@ -14,6 +14,7 @@ class CircleBrush(Brush):
     def generate(self):
         radius = self.size // 2 - 1
         size = self.size * 2 - 1
+        print('SIZE: ', size)
         center = (size-1) // 2
 
         # Create empty matrix with sharp circle in it

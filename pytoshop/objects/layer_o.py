@@ -22,7 +22,7 @@ class Layer:
     def fill(self, color):
         self.rgb = np.full((self.image.height, self.image.width, 3), color, np.uint8)
         self.alpha = np.full((self.image.height, self.image.width, 1), 1.)
-        
+
         self.updateDisplay(0, self.image.height, 0, self.image.width)
 
     def clear(self):
@@ -37,6 +37,7 @@ class Layer:
         self.updateDisplay(0, self.image.height, 0, self.image.width)
 
     def draw(self, rgba, x0, y0):
+        print('x0:', x0, 'y0: ', y0)
         rgb, alpha = rgba_to_rgb(rgba)
 
         size = len(rgb)
@@ -48,17 +49,35 @@ class Layer:
         distLeft, distRight = x0 - r, x0 + r + 1
         padLeft, padRight = max(0, distLeft), min(self.image.width, distRight)
 
-        top_color = rgb[padTop - distTop:size - (distBottom - padBottom), padLeft - distLeft:size - (distRight - padRight)]
-        top_alpha = alpha[padTop - distTop:size - (distBottom - padBottom), padLeft - distLeft:size - (distRight - padRight)]
-        bcg_color = self.rgb[padTop:padBottom, padLeft:padRight]
-        bcg_alpha = self.alpha[padTop:padBottom, padLeft:padRight]
+        out_top = max(0, r - y0)
+        out_bottom = max(0, y0 - self.image.height + 1 + r)
+        out_left = max(0, r - x0)
+        out_right = max(0, x0 - self.image.width + 1 + r)
+
+        top_start_y = out_top
+        top_end_y = size - out_bottom
+        top_start_x = out_left
+        top_end_x = size - out_right
+
+        bcg_start_y = max(0, y0 - r)
+        bcg_end_y = min(self.image.height, y0 + r + 1)
+        bcg_start_x = max(0, x0 - r)
+        bcg_end_x = min(self.image.width, x0 + r + 1)
+
+        if (top_start_x == top_end_x or top_start_y == top_end_y or bcg_start_x == bcg_end_x or bcg_start_y == bcg_end_y or top_start_x < 0 or top_end_x < 0 or top_start_y < 0 or top_end_y < 0 or bcg_start_x < 0 or bcg_end_x < 0 or bcg_start_y < 0 or bcg_end_y < 0):
+            return # Out of drawing bounds
+
+        top_color = rgb[top_start_y:top_end_y, top_start_x:top_end_x]
+        top_alpha = alpha[top_start_y:top_end_y, top_start_x:top_end_x]
+        bcg_color = self.rgb[bcg_start_y:bcg_end_y, bcg_start_x:bcg_end_x]
+        bcg_alpha = self.alpha[bcg_start_y:bcg_end_y, bcg_start_x:bcg_end_x]
 
         new_rgb, new_alpha = blend(top_color, top_alpha, bcg_color, bcg_alpha)
 
-        self.rgb[padTop:padBottom, padLeft:padRight] = new_rgb
-        self.alpha[padTop:padBottom, padLeft:padRight] = new_alpha
+        self.rgb[bcg_start_y:bcg_end_y, bcg_start_x:bcg_end_x] = new_rgb
+        self.alpha[bcg_start_y:bcg_end_y, bcg_start_x:bcg_end_x] = new_alpha
 
-        self.updateDisplay(padTop, padBottom, padLeft, padRight)
+        self.updateDisplay(bcg_start_y, bcg_end_y, bcg_start_x, bcg_end_x)
 
     def drawLine(self, rgba, x0, y0, x1, y1):
         """

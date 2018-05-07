@@ -26,7 +26,7 @@ class MainView(QWidget):
         self.layers = Layers(self.drawing_board.controller.image)
 
         layout = QGridLayout()
-        layout.addWidget(self.toolbar, 1, 1, 8, 1)
+        layout.addWidget(self.toolbar, 1, 1, 8, 1)  # addWidget(row, col, rowspan == height, colspan == width)
         invisible = QWidget()
         invisible.hide()
         layout.addWidget(invisible, 1, 2, 8, 8)
