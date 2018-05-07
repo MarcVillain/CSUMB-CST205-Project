@@ -4,10 +4,10 @@ from PyQt5.QtWidgets import QHBoxLayout, QDesktopWidget, QWidget, QGridLayout
 from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
 
 from pytoshop.controllers.main_c import MainController
-from pytoshop.views.drawing_board_v import DrawingBoard
-from pytoshop.views.layers_v import Layers
-from pytoshop.views.menu_bar_v import MenuBar
-from pytoshop.views.tool_bar_v import ToolBar
+from pytoshop.views.drawing_board_v import DrawingBoardView
+from pytoshop.views.layers_v import LayersView
+from pytoshop.views.menu_bar_v import MenuBarView
+from pytoshop.views.tool_bar_v import ToolBarView
 
 
 class MainView(QWidget):
@@ -19,11 +19,11 @@ class MainView(QWidget):
         self.setWindowTitle('Pytoshop')
         self.initGeometry(650, 400)
 
-        self.menuBar = MenuBar(self)
+        self.menuBar = MenuBarView(self)
 
-        self.toolbar = ToolBar(self, 'pytoshop/views/images/')
-        self.drawing_board = DrawingBoard(self, 500, 500)
-        self.layers = Layers(self.drawing_board.controller.image)
+        self.toolbar = ToolBarView(self, 'pytoshop/views/images/')
+        self.drawing_board = DrawingBoardView(self, 500, 500)
+        self.layers = LayersView(self.drawing_board.controller.image)
 
         layout = QGridLayout()
         layout.addWidget(self.toolbar, 1, 1, 8, 1)  # addWidget(row, col, rowspan == height, colspan == width)

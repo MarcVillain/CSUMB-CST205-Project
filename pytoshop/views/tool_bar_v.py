@@ -7,12 +7,12 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QBoxLayout, QPushButton, QHBoxLayout, QWidget, QVBoxLayout
 
 
-class ToolBar(QWidget):
+class ToolBarView(QWidget):
 
     def __init__(self, parent, icon_directory):
         super().__init__()
         layout = QVBoxLayout()
-        self.setGeometry(QRect(0, 0, 20, 200))
+        self.setFixedWidth(40)
 
         self.buttons = []
 

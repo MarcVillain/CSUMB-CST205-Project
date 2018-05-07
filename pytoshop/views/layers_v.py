@@ -19,16 +19,29 @@ class LayersItem(QWidget):
         layout.addWidget(QLabel('Layer 0'))
 
         self.refresh()
+        layout.addStretch()
 
         self.setLayout(layout)
 
     def refresh(self):
-        rgba = cv2.resize(rgb_to_rgba(self.layer.rgb, self.layer.alpha), (40, 40), cv2.INTER_AREA)
-        image = QImage(rgba, 40, 40, 4*40, QImage.Format_RGBA8888)
+        height, width = self.layer.rgb.shape[:2]
+
+        max_size = 40
+
+        new_width = max_size
+        new_height = height * new_width // width
+
+        if height > max_size:
+            new_height = max_size
+            new_width = width * new_height // height
+
+        rgba = cv2.resize(rgb_to_rgba(self.layer.rgb, self.layer.alpha), (new_width, new_height), cv2.INTER_AREA)
+        image = QImage(rgba, new_width, new_height, 4*new_width, QImage.Format_RGBA8888)
         pixmap = QPixmap(image)
         self.pixmap.setPixmap(pixmap)
 
-class Layers(QListWidget):
+
+class LayersView(QListWidget):
 
     def __init__(self, image):
         super().__init__()
@@ -36,14 +49,14 @@ class Layers(QListWidget):
         self.layers = []
 
         for layer in image.layers:
-            qCustomWidget = LayersItem(layer)
-            qListWidgetItem = QListWidgetItem(self)
-            qListWidgetItem.setSizeHint(qCustomWidget.sizeHint())
-            self.addItem(qListWidgetItem)
-            self.setItemWidget(qListWidgetItem, qCustomWidget)
-            self.layers.append(qCustomWidget)
+            item = LayersItem(layer)
+            list_item = QListWidgetItem(self)
+            list_item.setSizeHint(item.sizeHint())
+            self.addItem(list_item)
+            self.setItemWidget(list_item, item)
+            self.layers.append(item)
 
-        self.setFixedWidth(200)
+        self.setFixedWidth(150)
 
     def refresh(self, i):
         self.layers[i].refresh()

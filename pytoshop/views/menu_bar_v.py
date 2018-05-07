@@ -2,7 +2,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenuBar, QAction
 
 
-class MenuBar(QMenuBar):
+class MenuBarView(QMenuBar):
 
     def __init__(self, parent):
         super().__init__()
