@@ -4,7 +4,7 @@ from functools import partial
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QRect
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QBoxLayout, QPushButton, QHBoxLayout, QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QBoxLayout, QPushButton, QHBoxLayout, QWidget, QVBoxLayout, QSlider
 
 
 class ToolBarView(QWidget):
