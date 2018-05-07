@@ -18,7 +18,7 @@ class CircleBrush(Brush):
 
         # Create empty matrix with sharp circle in it
         mat = np.full((size, size, 4), 0, np.uint8)
-        cv2.circle(mat, (center, center), radius, (0, 0, 0, 255), -1)
+        cv2.circle(mat, (center, center), radius, (0, 0, 0, 255 * self.opacity / 100), -1)
 
         # Apply gaussian blur filter to the matrix
         gaussRadius = self.size - int((self.size - 3) * self.hardness / 100)

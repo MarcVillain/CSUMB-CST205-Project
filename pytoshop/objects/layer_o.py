@@ -64,7 +64,7 @@ class Layer:
         bcg_end_x = min(self.image.width, x0 + r + 1)
 
         if (top_start_x == top_end_x or top_start_y == top_end_y or bcg_start_x == bcg_end_x or bcg_start_y == bcg_end_y or top_start_x < 0 or top_end_x < 0 or top_start_y < 0 or top_end_y < 0 or bcg_start_x < 0 or bcg_end_x < 0 or bcg_start_y < 0 or bcg_end_y < 0):
-            return # Out of drawing bounds
+            return  # Out of drawing bounds
 
         top_color = rgb[top_start_y:top_end_y, top_start_x:top_end_x]
         top_alpha = alpha[top_start_y:top_end_y, top_start_x:top_end_x]
