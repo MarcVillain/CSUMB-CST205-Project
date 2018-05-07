@@ -1,59 +1,16 @@
-from pytoshop.controllers.main_c import MainController, DrawingBoardController
-from pytoshop.objects.brushes.circle_brush import CircleBrush
-
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QHBoxLayout, QDesktopWidget
-from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtCore import Qt, QEvent
-
-import cv2
-
-
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QMenuBar, QToolBar
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QHBoxLayout, QDesktopWidget, QWidget, QGridLayout
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
+
+from pytoshop.controllers.main_c import MainController
+from pytoshop.views.drawing_board_v import DrawingBoardView
+from pytoshop.views.layers_v import LayersView
+from pytoshop.views.menu_bar_v import MenuBarView
+from pytoshop.views.tool_bar_v import ToolBarView
 
 
-class DrawingBoard(QLabel):
-
-    def __init__(self, parent, width, height, image_name=None):
-        super().__init__(parent)
-        self.controller = DrawingBoardController(parent.controller, self, width, height, image_name)
-        self.brush = CircleBrush()
-        self.setMouseTracking(True)
-
-    def display(self, image):
-        #cv2.imwrite("layer0.png", image.layers[0].values)
-        #cv2.imwrite("layer1.png", image.layers[1].values)
-        #cv2.imwrite("disp_layer0.png", image.layers[0].display_values)
-        #cv2.imwrite("disp_layer1.png", image.layers[1].display_values)
-
-        new_width, new_height = image.width * image.scale, image.height * image.scale
-
-        qimage = QImage(image.top_layer.display_values, image.width, image.height, image.bytesPerLine, QImage.Format_RGBA8888)
-        qimage = qimage.scaled(new_width, new_height)
-        pixmap = QPixmap(qimage)
-        pixmap = pixmap.scaled(new_width, new_height)
-
-        self.setPixmap(pixmap)
-        self.setGeometry(self.x(), self.y(), new_width, new_height)
-
-    def mousePressEvent(self, event):
-        self.controller.onMousePressed(event)
-
-    def mouseMoveEvent(self, event):
-        self.controller.onMouseMove(event)
-
-    def mouseReleaseEvent(self, event):
-        self.controller.onMouseReleased(event)
-
-    def leaveEvent(self, event):
-        self.controller.onLeave()
-
-    def wheelEvent(self, event):
-        self.controller.onWheel(event.angleDelta().y())
-
-
-class MainView(QMainWindow):
+class MainView(QWidget):
 
     def __init__(self):
         super().__init__()
@@ -61,58 +18,23 @@ class MainView(QMainWindow):
 
         self.setWindowTitle('Pytoshop')
         self.initGeometry(650, 400)
-        self.initMenuBar()
 
-        self.drawing_board = DrawingBoard(self, 500, 500)
+        self.menuBar = MenuBarView(self)
 
-        hlayout = QHBoxLayout()
-        hlayout.addWidget(self.drawing_board)
-        self.setLayout(hlayout)
+        self.toolbar = ToolBarView(self, 'pytoshop/views/images/')
+        self.drawing_board = DrawingBoardView(self, 500, 500)
+        self.layers = LayersView(self.drawing_board.controller.image)
 
-        self.show()
+        layout = QGridLayout()
+        layout.addWidget(self.toolbar, 1, 1, 8, 1)  # addWidget(row, col, rowspan == height, colspan == width)
+        invisible = QWidget()
+        invisible.hide()
+        layout.addWidget(invisible, 1, 2, 8, 8)
+        layout.addWidget(self.layers, 1, 10, 8, 1)
 
-    def initMenuBar(self):
-        menuItems = {
-            'File': {
-                'New': {'icon': 'new.png'},
-                'Open': {'icon': 'open.png'},
-                'Save': {'icon': 'save.png'},
-                'Save As': {'icon': 'saveAs.png'},
-                'Export': {'icon': 'export.png'},
-                'Exit': {'icon': 'exit.png', 'trigger': self.close}
-            },
-            'Filters': {
-                'Grayscale': {},
-                'Sepia': {},
-                'Negative': {}
-            },
-            'Toolbar': {
-                'Brush': {'icon': 'brush.png'},
-                'Select': {'icon': 'select.png'},
-                'Erase': {'icon': 'erase.png'},
-                'Color Picker': {'icon': 'color.png'},
-                'Text': {'icon': 'text1.png'},
-                'Magnifier': {'icon': 'zoom.png'}
-            }
-        }
+        layout.setContentsMargins(0, 0, 0, 0)
 
-        menuBar = self.menuBar()
-
-        for title, subItems in menuItems.items():
-            menu = menuBar.addMenu(title)
-
-            for key, value in subItems.items():
-                try:
-                    action = QAction(QIcon('pytoshop/views/images/' + value['icon']), '&' + key, menu)
-                except:
-                    action = QAction('&' + key, menu)
-
-                try:
-                    menu.triggered.connect(value['trigger'])
-                except:
-                    pass
-
-                menu.addAction(action)
+        self.setLayout(layout)
 
     def initGeometry(self, width, height):
         # Set size
@@ -120,39 +42,31 @@ class MainView(QMainWindow):
 
         # Center window
         frame = self.frameGeometry()
-        centerPoint = QDesktopWidget().availableGeometry().center()
-        frame.moveCenter(centerPoint)
+        center_point = QDesktopWidget().availableGeometry().center()
+        frame.moveCenter(center_point)
         self.move(frame.topLeft())
 
     # EVENTS #
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Control:
-            self.controller.onControlPressed()
-        elif event.key() == Qt.Key_A:
-            self.drawing_board.controller.switchLayer()
-        elif event.key() == Qt.Key_C:
-            self.drawing_board.controller.switchBrushColor()
-        elif event.key() == Qt.Key_B:
-            self.drawing_board.controller.switchBrush()
-        elif event.key() == Qt.Key_T:
-            self.drawing_board.controller.switchText()
+            self.controller.onControlKeyPressed()
 
     def keyReleaseEvent(self, event):
         if event.key() == Qt.Key_Control:
-            self.controller.onControlReleased()
+            self.controller.onControlKeyReleased()
 
     def mousePressEvent(self, event):
-        self.controller.onMousePressed(event.globalPos())
+        self.controller.onMousePressed(event)
 
     def mouseReleaseEvent(self, event):
         self.controller.onMouseReleased()
 
     def mouseMoveEvent(self, event):
-        self.controller.onMouseMove(event.globalPos())
+        self.controller.onMouseMove(event)
 
     def wheelEvent(self, event):
-        self.drawing_board.wheelEvent(event)
+        self.controller.onWheel(event)
 
     # FUNCTIONS #
 
