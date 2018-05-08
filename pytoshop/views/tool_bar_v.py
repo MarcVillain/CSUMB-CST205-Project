@@ -32,7 +32,7 @@ class ToolBarView(QWidget):
 
         self.setAutoFillBackground(True)
         p = self.palette()
-        p.setColor(self.backgroundRole(), Qt.gray)
+        p.setColor(self.backgroundRole(), Qt.darkGray)
         self.setPalette(p)
 
     def pressButton(self, pos):

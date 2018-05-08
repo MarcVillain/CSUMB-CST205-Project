@@ -16,7 +16,11 @@ class Image:
         self.current_layer.fill([255, 255, 255])
         self.layers.append(self.current_layer)
 
-        self.top_layer = self.newLayer(False)
+        self.top_layer = Layer(self, self.current_layer, None)
+        self.bottom_layer = Layer(self, None, self.current_layer)
+
+        self.bottom_layer.fill_checker((255, 255, 255), (205, 205, 205), 5)
+        self.current_layer.bottom_layer = self.bottom_layer
 
     def newLayer(self, visible=True):
         bottom_layer = self.layers[-1]

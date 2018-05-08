@@ -183,3 +183,20 @@ class Layer:
 
         if self.top_layer is not None:
             self.top_layer.updateDisplay(padTop, padBottom, padLeft, padRight)
+
+    def fill_checker(self, colorA, colorB, size):
+        color = (colorA, colorB)
+        colorID = 0
+        for j in range(self.image.height):
+            for i in range(self.image.width):
+                if (i+1) % size == 0:
+                    colorID = (colorID + 1) % 2
+
+                for k in range(3):
+                    self.rgb[j][i][k] = color[colorID][k]
+                self.alpha[j][i][0] = 1
+
+            if (j+1) % size == 0:
+                colorID = (colorID + 1) % 2
+
+        self.updateDisplay(0, self.image.height, 0, self.image.width)
