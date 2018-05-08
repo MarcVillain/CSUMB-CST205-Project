@@ -1,18 +1,13 @@
 import cv2
 import numpy as np
 
-from pytoshop.objects.tool_o import Tool
+from pytoshop.objects.tools.brush import Brush
 
 
-class Pencil(Tool):
+class Paint(Brush):
 
-    def __init__(self, size=20, color=(0, 0, 0), hardness=100, opacity=100):
+    def __init__(self):
         super().__init__()
-
-        self.size = size
-        self.color = color
-        self.hardness = hardness
-        self.opacity = opacity
 
     def onMousePressed(self, controller, x0, y0):
         controller.image.current_layer.draw(self.generate(), x0, y0)
@@ -35,10 +30,15 @@ class Pencil(Tool):
         radius = self.size // 2 - 1
         size = self.size * 2 - 1
         center = (size - 1) // 2
+        r, g, b = self.color
 
         # Create empty matrix with sharp circle in it
-        mat = np.full((size, size, 4), 0, np.uint8)
-        r, g, b = self.color
+        mat = np.full((size, size, 4), (r, g, b, 0), np.uint8)
         cv2.circle(mat, (center, center), radius, (r, g, b, 255 * self.opacity / 100), -1)
+
+        # Apply gaussian blur filter to the matrix
+        gaussRadius = self.size - int((self.size - 3) * self.hardness / 100)
+        gaussRadius += 1 - gaussRadius % 2
+        mat = cv2.GaussianBlur(mat, (gaussRadius, gaussRadius), 0)
 
         return mat

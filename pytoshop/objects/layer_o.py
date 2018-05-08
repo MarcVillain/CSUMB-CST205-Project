@@ -1,9 +1,7 @@
-import cv2
 import numpy as np
 
 from pytoshop.utils.blend_u import normal, blend
-from pytoshop.utils.color_u import color_add_rgb, rgb_to_rgba, rgba_to_rgb
-from pytoshop.utils.color_u import color_add_rgba
+from pytoshop.utils.color_u import rgb_to_rgba, rgba_to_rgb
 
 
 class Layer:

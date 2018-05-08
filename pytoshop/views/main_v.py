@@ -1,14 +1,16 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QHBoxLayout, QDesktopWidget, QWidget, QGridLayout
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QDesktopWidget, QWidget, QGridLayout
 
 from pytoshop.controllers.main_c import MainController
-from pytoshop.views.drawing_board_v import DrawingBoardView
-from pytoshop.views.layers_v import LayersView
-from pytoshop.views.menu_bar_v import MenuBarView
-from pytoshop.views.tool_bar_v import ToolBarView
-from pytoshop.views.top_bar_v import TopBarView
+from pytoshop.objects.tools.brushes.eraser_o import Eraser
+from pytoshop.objects.tools.brushes.paint_o import Paint
+from pytoshop.objects.tools.brushes.pencil_o import Pencil
+from pytoshop.views.main.drawing_board_v import DrawingBoardView
+from pytoshop.views.main.layers_v import LayersView
+from pytoshop.views.main.menu_bar_v import MenuBarView
+from pytoshop.views.main.tool_bar_v import ToolBarView
+from pytoshop.views.main.top_bar_v import TopBarView
 
 
 class MainView(QWidget):
@@ -22,7 +24,8 @@ class MainView(QWidget):
 
         self.menuBar = MenuBarView(self)
 
-        self.top_bar = TopBarView()
+        self.tools = [Paint(), Pencil(), Eraser()]
+        self.top_bar = TopBarView(self.tools)
         self.toolbar = ToolBarView(self, 'pytoshop/views/images/')
         self.drawing_board = DrawingBoardView(self, 500, 500)
         self.layers = LayersView(self.drawing_board.controller.image)

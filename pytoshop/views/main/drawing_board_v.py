@@ -1,10 +1,7 @@
-import cv2
-from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QLabel
 
-from pytoshop.controllers.drawing_board_c import DrawingBoardController
-from pytoshop.utils.color_u import rgb_to_rgba
+from pytoshop.controllers.main.drawing_board_c import DrawingBoardController
 
 
 class DrawingBoardView(QLabel):

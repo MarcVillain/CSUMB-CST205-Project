@@ -10,7 +10,7 @@ class Image:
         self.height = height
         self.bytesPerLine = width * self.channel_count
 
-        self.scale, self.min_scale, self.max_scale = 1, 0.5, 2
+        self.scale, self.min_scale, self.max_scale = 1, 0.5, 2.5
 
         self.current_layer = Layer(self, pos=0)
         self.current_layer.fill([255, 255, 255])

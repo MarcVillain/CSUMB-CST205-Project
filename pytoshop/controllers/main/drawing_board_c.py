@@ -1,7 +1,4 @@
 from pytoshop.objects.image_o import Image
-from pytoshop.objects.tools.brush_o import Brush
-from pytoshop.objects.tools.eraser_o import Eraser
-from pytoshop.objects.tools.pencil_o import Pencil
 
 
 class DrawingBoardController:
@@ -11,7 +8,7 @@ class DrawingBoardController:
         self.view = view
 
         self.image = Image(width, height, image_name)
-        self.tool = Eraser()
+        self.tool = self.main_c.view.tools[0]
 
         self.lastPos = None
         self.mouse_pressed = False

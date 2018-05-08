@@ -1,6 +1,3 @@
-from pytoshop.objects.image_o import Image
-
-
 class MainController:
 
     def __init__(self, view):

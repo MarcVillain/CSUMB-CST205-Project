@@ -1,18 +1,13 @@
 import cv2
 import numpy as np
 
-from pytoshop.objects.tool_o import Tool
+from pytoshop.objects.tools.brush import Brush
 
 
-class Eraser(Tool):
+class Eraser(Brush):
 
-    def __init__(self, size=20, color=(0, 0, 0), hardness=100, opacity=100):
+    def __init__(self):
         super().__init__()
-
-        self.size = size
-        self.color = color
-        self.hardness = hardness
-        self.opacity = opacity
 
     def onMousePressed(self, controller, x0, y0):
         controller.image.current_layer.erase(self.generate(), x0, y0)
@@ -26,10 +21,6 @@ class Eraser(Tool):
         controller.image.top_layer.draw(self.generateContour(), x1, y1)
 
         controller.view.refresh()
-
-    def onMouseReleased(self, controller):
-        # TODO
-        pass
 
     def generate(self):
         radius = self.size // 2 - 1

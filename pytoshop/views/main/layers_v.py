@@ -1,8 +1,7 @@
 import cv2
-from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QListWidget, QHBoxLayout, QLabel, QListWidgetItem, QWidget, QListView, QFrame, \
-    QAbstractItemView
+from PyQt5.QtWidgets import QListWidget, QHBoxLayout, QLabel, QListWidgetItem, QWidget, QAbstractItemView
 
 from pytoshop.utils.blend_u import blend
 from pytoshop.utils.color_u import rgb_to_rgba
