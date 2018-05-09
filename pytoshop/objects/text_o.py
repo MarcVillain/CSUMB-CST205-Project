@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from tool_o import Tool
+from pytoshop.objects.tool_o import Tool
 
 class Text(Tool):
     def __init__(self, main_c, view, width, height, image_name=None):
@@ -24,11 +24,8 @@ class Text(Tool):
         pass
 
     def generate(self, x0, y0):
-        thing = cv2.putText(main_c.image.newLayer(), self.text, (x0, y0), self.font, self.color)
-        temp_layer = main_c.image.top_layer
-        for row in range(len(main_c.image.top_layer)):
-            for column in range(len(main_c.image.top_layer[0])):
-                if(thing[row][column] != (255,255,255)):
-                    temp_layer[row][column] = thing[row][column]
-        main_c.image.top_layer = temp_layer;
-        main_c.view.refresh()
+        mat = np.full((size, size, 4), 0, np.uint8)
+        
+        cv2.putText(mat, self.text, (x0, y0), self.font, self.color)
+
+        return mat

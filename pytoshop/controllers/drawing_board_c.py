@@ -1,5 +1,6 @@
 from pytoshop.objects.brushes.circle_brush import CircleBrush
 from pytoshop.objects.brushes.eraser_brush import EraserBrush
+from pytoshop.objects.text_o import Text
 from pytoshop.objects.image_o import Image
 
 

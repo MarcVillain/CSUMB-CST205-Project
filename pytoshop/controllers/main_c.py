@@ -1,10 +1,7 @@
-import numpy as np
-
 from pytoshop.objects.brushes.circle_brush import CircleBrush
 from pytoshop.objects.brushes.eraser_brush import EraserBrush
 
 from pytoshop.objects.image_o import Image
-from pytoshop.objects.text_o import Text
 
 
 class MainController:
