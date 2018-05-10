@@ -20,7 +20,7 @@ class MainView(QWidget):
         self.controller = MainController(self)
 
         self.setWindowTitle('Pytoshop')
-        self.initGeometry(650, 400)
+        self.initGeometry(800, 520)
 
         self.menuBar = MenuBarView(self)
 
@@ -28,7 +28,7 @@ class MainView(QWidget):
         self.top_bar = TopBarView(self.tools)
         self.toolbar = ToolBarView(self, 'pytoshop/views/images/')
         self.drawing_board = DrawingBoardView(self, 500, 500)
-        self.layers = LayersView(self.drawing_board.controller.image)
+        self.layers = LayersView(self, self.drawing_board.controller.image)
 
         layout = QGridLayout()
         layout.addWidget(self.top_bar, 1, 1, 1, 10)

@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from pytoshop.objects.tools.brush import Brush
+from pytoshop.objects.tools.brush_o import Brush
 
 
 class Paint(Brush):
