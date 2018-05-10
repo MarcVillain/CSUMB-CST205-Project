@@ -1,7 +1,7 @@
 
 # Pytoshop
 
-Pytoshop is a pain-like/photoshop-like tool, alowing people to draw, add filters and do all kinds of modifications to their images.
+Pytoshop is a paint-like/photoshop-like tool, alowing people to draw, add filters and do all kinds of modifications to their images.
 
 This project is realized as part of a California State University of Monterey Bay project for the CST205 course.
 
