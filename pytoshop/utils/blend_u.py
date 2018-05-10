@@ -10,11 +10,11 @@ def div0(a, b):
     return c
 
 
-def D(x):
-    if x <= .25:
-        return ((16 * x - 12) * x + 4) * x
-    else:
-        return sqrt(x)
+# def D(x):
+#     if x <= .25:
+#         return ((16 * x - 12) * x + 4) * x
+#     else:
+#         return sqrt(x)
 
 
 def normal(top, bcg):
@@ -22,55 +22,51 @@ def normal(top, bcg):
 
 
 def multiply(top, bcg):
-    return top * bcg / 255
+    return (top / 255 * bcg / 255) * 255
 
 
 def screen(top, bcg):
-    return bcg + top - (bcg * top / 255)
+    return bcg + top - multiply(top, bcg)
 
 
-def darken(top, bcg):
-    return min(top, bcg)
-
-
-def lighten(top, bcg):
-    return max(top, bcg)
-
-
-def color_dodge(top, bcg):
-    if top < 255:
-        return min(255, bcg / (255 - top))
-    else:
-        return 255
-
-
-def color_burn(top, bcg):
-    if top > 0:
-        return 255 - min(255, (255 - bcg) / top)
-    else:
-        return 0
-
-
-def hard_light(top, bcg):
-    if top <= 127:
-        return multiply(bcg, 2*top)
-    else:
-        return screen(bcg, 2*top - 255)
-
-
-def soft_light(top, bcg):
-    if top <= 127:
-        return top - (255 - 2*top) * bcg * (255 - bcg)
-    else:
-        return bcg + (2 * top - 255) * (D(bcg / 255) * 255 - bcg)
-
-
+# def darken(top, bcg):
+#     return min(top, bcg)
+#
+#
+# def lighten(top, bcg):
+#     return max(top, bcg)
+#
+#
+# def color_dodge(top, bcg):
+#     if top < 255:
+#         return min(255, bcg / (255 - top))
+#     else:
+#         return 255
+#
+#
+# def color_burn(top, bcg):
+#     if top > 0:
+#         return 255 - min(255, (255 - bcg) / top)
+#     else:
+#         return 0
+#
+#
+# def hard_light(top, bcg):
+#     if top <= 127:
+#         return multiply(bcg, 2*top)
+#     else:
+#         return screen(bcg, 2*top - 255)
+#
+#
+# def soft_light(top, bcg):
+#     if top <= 127:
+#         return top - (255 - 2*top) * bcg * (255 - bcg)
+#     else:
+#         return bcg + (2 * top - 255) * (D(bcg / 255) * 255 - bcg)
+#
+#
 def difference(top, bcg):
     return abs(bcg - top)
-
-
-def exclusion(top, bcg):
-    return bcg + top - 2*bcg*top
 
 
 def blend(top, top_alpha, bcg, bcg_alpha, blend_mode=normal):

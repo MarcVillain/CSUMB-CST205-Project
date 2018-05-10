@@ -12,7 +12,7 @@ class DrawingBoardView(QLabel):
         self.controller = DrawingBoardController(parent.controller, self, width, height, image_name)
         self.refresh()
         self.setMouseTracking(True)
-        self.setGeometry(parent.width()//2-width//2, parent.height()//2-height//2, width, height)
+        self.setGeometry(parent.width()//2-100-width//2, parent.height()//2+40-height//2, width, height)
 
     def refresh(self):
         image = self.controller.image
