@@ -34,7 +34,7 @@ class DrawingBoardController:
             self.tool.onMouseReleased(self)
 
     def onWheel(self, angleDeltaY):
-        self.image.scale += angleDeltaY * 0.01
+        self.image.scale += angleDeltaY * 0.001
         self.image.scale = max(self.image.min_scale, min(self.image.scale, self.image.max_scale))
         self.view.refresh()
 

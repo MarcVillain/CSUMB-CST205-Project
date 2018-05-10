@@ -119,6 +119,9 @@ class Layer:
         dx = x1 - x0
         dy = y1 - y0
 
+        if dx == 0 and dy == 0:
+            return
+
         xsign = 1 if dx > 0 else -1
         ysign = 1 if dy > 0 else -1
 
@@ -148,6 +151,9 @@ class Layer:
         # TODO: Generate and blur a real line instead of doing something like this...
         dx = x1 - x0
         dy = y1 - y0
+
+        if dx == 0 and dy == 0:
+            return
 
         xsign = 1 if dx > 0 else -1
         ysign = 1 if dy > 0 else -1
