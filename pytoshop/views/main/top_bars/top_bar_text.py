@@ -17,7 +17,7 @@ class TopBarText(QWidget):
         layout.addWidget(ColorFrameWidget(self.tool))
 
         layout.addWidget(QLabel('Size: '))
-        self.size_slider = SliderWidget(1, 5, self.tool.fontScale)
+        self.size_slider = SliderWidget(1, 40, self.tool.fontScale)
         self.size_slider.valueChanged.connect(self.onSizeChanged)
         layout.addWidget(self.size_slider)
 

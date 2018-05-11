@@ -13,12 +13,12 @@ class Text(Tool):
         self.text = "Hello World"
         self.fontScale = 2
         self.font = cv2.FONT_HERSHEY_SIMPLEX
-        self.color = (0,0,0,0)
+        self.color = (0, 0, 0, 255)
         self.top_bar = TopBarText(self)
 
     def onMousePressed(self, controller, x0, y0):
 
-        controller.image.current_layer.draw(self.generate(x0, y0), x0, y0)
+        controller.image.current_layer.draw(self.generate(controller, x0, y0), controller.image.width//2, controller.image.height//2)
         controller.view.refresh()
 
     def onMouseMove(self, controller, x0, y0, x1, y1):
@@ -31,10 +31,17 @@ class Text(Tool):
     def onMouseReleased(self, controller):
         pass
 
-    def generate(self, x0, y0):
-        size = self.fontScale*200+ 1
-        mat = np.full((size, size, 4), 0, np.uint8)
+    def generate(self, controller, x0, y0):
+        height = controller.image.height
+        if controller.image.height % 2 == 0:
+            height -= 1
 
-        cv2.putText(mat, self.text, (x0, y0), self.font, self.fontScale, self.color)
+        width = controller.image.width
+        if controller.image.width % 2 == 0:
+            width -= 1
+
+        mat = np.full((height, width, 4), 0, np.uint8)
+
+        cv2.putText(mat, self.text, (x0, y0), self.font, self.fontScale, self.color, 1)
 
         return mat
