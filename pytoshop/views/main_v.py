@@ -24,7 +24,7 @@ class MainView(QWidget):
         self.initGeometry(650, 400)
 
         self.menuBar = MenuBarView(self)
-        
+
         #Text(self.controller, self.controller.view, 650, 400)
         #Paint()
 
