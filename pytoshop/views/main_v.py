@@ -6,6 +6,7 @@ from pytoshop.controllers.main_c import MainController
 from pytoshop.objects.tools.brushes.eraser_o import Eraser
 from pytoshop.objects.tools.brushes.paint_o import Paint
 from pytoshop.objects.tools.brushes.pencil_o import Pencil
+from pytoshop.objects.tools.text_o import Text
 from pytoshop.views.main.drawing_board_v import DrawingBoardView
 from pytoshop.views.main.layers_v import LayersView
 from pytoshop.views.main.menu_bar_v import MenuBarView
@@ -23,8 +24,11 @@ class MainView(QWidget):
         self.initGeometry(650, 400)
 
         self.menuBar = MenuBarView(self)
+        
+        #Text(self.controller, self.controller.view, 650, 400)
+        #Paint()
 
-        self.tools = [Paint(), Pencil(), Eraser()]
+        self.tools = [Text(self.controller, self.controller.view, 650, 400), Pencil(), Eraser()]
         self.top_bar = TopBarView(self.tools)
         self.toolbar = ToolBarView(self, 'pytoshop/views/images/')
         self.drawing_board = DrawingBoardView(self, 500, 500)
