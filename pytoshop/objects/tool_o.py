@@ -6,7 +6,7 @@ class Tool:
     def onMousePressed(self, controller, x, y):
         pass
 
-    def onMouseMoved(self, controller, fromX, fromY, toX, toY):
+    def onMouseMove(self, controller, fromX, fromY, toX, toY):
         pass
 
     def onMouseReleased(self, controller):

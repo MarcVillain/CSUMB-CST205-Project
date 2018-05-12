@@ -5,6 +5,8 @@ class MainController:
 
         self.control_pressed = False
         self.mouse_pressed = False
+        self.startPoint = None
+        self.startBoard = None
 
     def onControlKeyPressed(self):
         self.control_pressed = True
@@ -25,6 +27,10 @@ class MainController:
     def onMouseMove(self, event):
         if self.mouse_pressed and self.control_pressed:
             end_point = event.globalPos()
+            if self.startPoint is None:
+                self.startPoint = event.globalPos()
+            if self.startBoard is None:
+                self.startBoard = self.view.drawing_board.pos()
 
             deltaX = end_point.x() - self.startPoint.x()
             deltaY = end_point.y() - self.startPoint.y()
