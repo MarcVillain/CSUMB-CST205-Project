@@ -12,6 +12,7 @@ class Layer:
         self.image = image
         self.bottom_layer = bottom_layer
         self.top_layer = top_layer
+        self.location = 0, 0
 
         self.blend_mode = normal
         self.x, self.y = 0, 0
