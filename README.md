@@ -1,9 +1,9 @@
 
 # Pytoshop
 
-Pytoshop is a pain-like/photoshop-like tool, alowing people to draw, add filters and do all kinds of modifications to their images.
+Pytoshop is a paint-like/photoshop-like tool, allowing people to draw, add filters and do all kinds of modifications to their images.
 
-This project is realized as part of a California State University of Monterey Bay project for the CST205 course.
+This project was developed as part of a California State University of Monterey Bay project for the CST205 course.
 
 ## Getting Started
 
@@ -31,10 +31,10 @@ python3 ./start.py
 
 ## Authors
 
-* **Pernille Dahl** - *Developper*
-* **Joey Thomas** - *Developper*
-* **Marc Villain** - *Developper*
-* **Sam Westigard** - *Developper*
+* **Pernille Dahl** - *Developer (GUI)*
+* **Joey Thomas** - *Developer (Text tool)*
+* **Marc Villain** - *Developer (Drawing board and pen tools)*
+* **Sam Westigard** - *Developer (Save, load, and filters)*
 
 ## License
 
@@ -44,3 +44,12 @@ This project is licensed under the GNUv3 License - see the [LICENSE](LICENSE) fi
 
 * Hat tip to anyone who's code was used
 * [StackOverflow](https://stackoverflow.com) - An awesome code sharing place
+* [This](https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf) Adobe document for helping us come up with some of the formulas.
+
+## Future Work
+
+Features we would like to implement in the future are:
+* Move Layers tool
+* Selection tool
+* Layer Masks
+* Text Layer(more specialized not just a tool)

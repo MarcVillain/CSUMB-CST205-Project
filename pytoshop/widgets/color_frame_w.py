@@ -20,5 +20,5 @@ class ColorFrameWidget(QFrame):
             new_color = QColorDialog.getColor(old_color, self)
 
             if new_color.isValid():
-                self.tool.color = (new_color.red(), new_color.green(), new_color.blue())
+                self.tool.color = (new_color.red(), new_color.green(), new_color.blue(), new_color.alpha())
                 self.setStyleSheet('QWidget { background-color: rgb%s }' % (self.tool.color,))
