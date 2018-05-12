@@ -21,17 +21,6 @@ class Image:
         self.bottom_layer.fill_checker((255, 255, 255), (205, 205, 205), 5)
         self.current_layer.bottom_layer = self.bottom_layer
 
-        self.addLayer()
-        self.addLayer()
-        self.addLayer()
-        self.addLayer()
-        self.addLayer()
-        self.addLayer()
-        self.addLayer()
-        self.addLayer()
-        self.addLayer()
-        self.addLayer()
-
     def addLayer(self):
         # Create new layer
         new_pos = self.current_layer.pos + 1
