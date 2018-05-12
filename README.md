@@ -31,10 +31,10 @@ python3 ./start.py
 
 ## Authors
 
-* **Pernille Dahl** - *Developer*
-* **Joey Thomas** - *Developer*
-* **Marc Villain** - *Developer*
-* **Sam Westigard** - *Developer*
+* **Pernille Dahl** - *Developer (GUI)*
+* **Joey Thomas** - *Developer (Text tool)*
+* **Marc Villain** - *Developer (Drawing board and pen tools)*
+* **Sam Westigard** - *Developer (Save, load, and filters)*
 
 ## License
 
@@ -44,3 +44,12 @@ This project is licensed under the GNUv3 License - see the [LICENSE](LICENSE) fi
 
 * Hat tip to anyone who's code was used
 * [StackOverflow](https://stackoverflow.com) - An awesome code sharing place
+* [This](https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf) Adobe document for helping us come up with some of the formulas.
+
+## Future Work
+
+Features we would like to implement in the future are:
+* Move Layers tool
+* Selection tool
+* Layer Masks
+* Text Layer(more specialized not just a tool)
