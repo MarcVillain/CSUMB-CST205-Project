@@ -9,7 +9,7 @@ class TopBarView(QWidget):
 
         self.top_bars = []
         for tool in tools:
-            self.top_bars.append(tool.top_bar)
+            self.top_bars.append(tools[tool].top_bar)
 
         layout = QHBoxLayout()
         self.setFixedHeight(40)
