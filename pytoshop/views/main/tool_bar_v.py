@@ -43,6 +43,7 @@ class ToolBarView(QWidget):
     def pressButton(self, name):
         self.currentButton.setChecked(False)
         self.parent.drawing_board.controller.tool = self.tools[name]
+        self.parent.topBar.changeTopBar(name)
         self.currentButton = self.buttons[name]
         self.currentButton.setChecked(True)
         print(self.currentButton.objectName())

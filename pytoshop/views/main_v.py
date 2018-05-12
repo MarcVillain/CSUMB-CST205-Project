@@ -36,13 +36,13 @@ class MainView(QWidget):
                       "zoom": Zoom(),
                       "select": Hand()
                       }
-        self.top_bar = TopBarView(self.tools)
+        self.topBar = TopBarView(self.tools)
         self.toolbar = ToolBarView(self, 'pytoshop/views/images/toolBarImages/', self.tools)
         self.drawing_board = DrawingBoardView(self, 500, 500)
         self.layers = LayersView(self, self.drawing_board.controller.image)
 
         layout = QGridLayout()
-        layout.addWidget(self.top_bar, 1, 1, 1, 10)
+        layout.addWidget(self.topBar, 1, 1, 1, 10)
         layout.addWidget(self.toolbar, 2, 1, 8, 1)  # addWidget(row, col, rowspan == height, colspan == width)
         invisible = QWidget()
         invisible.hide()

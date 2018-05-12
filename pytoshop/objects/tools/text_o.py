@@ -10,13 +10,12 @@ class Text(Tool):
         super().__init__()
 
         self.text = ""
-        self.fontScale = 2
+        self.fontScale = 1
         self.font = cv2.FONT_HERSHEY_SIMPLEX
-        self.color = (0, 0, 0, 255)
+        self.color = (0, 100, 250, 255)
         self.top_bar = TopBarText(self)
 
     def onMousePressed(self, controller, x0, y0):
-
         controller.image.current_layer.draw(self.generate(controller, x0, y0), controller.image.width//2, controller.image.height//2)
         controller.view.refresh()
 

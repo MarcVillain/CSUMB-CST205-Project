@@ -6,7 +6,6 @@ class Zoom(Tool):
     def __init__(self):
         super().__init__()
         self.isPressed = False
-        self.top_bar = None
 
     def onMousePressed(self, controller, x, y):
         self.isPressed = True

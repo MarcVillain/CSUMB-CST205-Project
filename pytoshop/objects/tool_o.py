@@ -1,6 +1,10 @@
+from PyQt5.QtWidgets import QWidget
+
+
 class Tool:
 
     def __init__(self):
+        self.top_bar = QWidget()
         pass
 
     def onMousePressed(self, controller, x, y):
