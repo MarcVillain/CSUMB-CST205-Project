@@ -25,7 +25,7 @@ class MainView(QWidget):
 
         self.menuBar = MenuBarView(self)
 
-        self.tools = [Move(), Pencil(), Eraser()]
+        self.tools = [Paint(), Pencil(), Eraser()]
         self.top_bar = TopBarView(self.tools)
         self.toolbar = ToolBarView(self, 'pytoshop/views/images/')
         self.drawing_board = DrawingBoardView(self, 500, 500)

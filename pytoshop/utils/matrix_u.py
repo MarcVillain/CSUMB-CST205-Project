@@ -15,4 +15,4 @@ def intersect(top, bcg, x, y):
 
 
 def intersect_both(top, bcg, x, y):
-    return intersect(top, bcg, x, y), intersect(bcg, top, -x, -y)
+    return intersect(bcg, top, -x, -y), intersect(top, bcg, x, y)

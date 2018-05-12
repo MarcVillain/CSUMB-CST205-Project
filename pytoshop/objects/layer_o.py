@@ -46,17 +46,17 @@ class Layer:
 
         rgb, alpha = rgba_to_rgb(rgba)
 
-        top_color = rgb[top_pos[0]:top_pos[1], top_pos[2]:top_pos[3]]
-        top_alpha = alpha[top_pos[0]:top_pos[1], top_pos[2]:top_pos[3]]
-        bcg_color = self.rgb[bcg_pos[0]:bcg_pos[1], bcg_pos[2]:bcg_pos[3]]
-        bcg_alpha = self.alpha[bcg_pos[0]:bcg_pos[1], bcg_pos[2]:bcg_pos[3]]
+        top_color = rgb[top_pos[1]:top_pos[3], top_pos[0]:top_pos[2]]
+        top_alpha = alpha[top_pos[1]:top_pos[3], top_pos[0]:top_pos[2]]
+        bcg_color = self.rgb[bcg_pos[1]:bcg_pos[3], bcg_pos[0]:bcg_pos[2]]
+        bcg_alpha = self.alpha[bcg_pos[1]:bcg_pos[3], bcg_pos[0]:bcg_pos[2]]
 
         new_rgb, new_alpha = blend(top_color, top_alpha, bcg_color, bcg_alpha)
 
-        self.rgb[bcg_pos[0]:bcg_pos[1], bcg_pos[2]:bcg_pos[3]] = new_rgb
-        self.alpha[bcg_pos[0]:bcg_pos[1], bcg_pos[2]:bcg_pos[3]] = new_alpha
+        self.rgb[bcg_pos[1]:bcg_pos[3], bcg_pos[0]:bcg_pos[2]] = new_rgb
+        self.alpha[bcg_pos[1]:bcg_pos[3], bcg_pos[0]:bcg_pos[2]] = new_alpha
 
-        self.updateDisplay(bcg_pos[0], bcg_pos[1], bcg_pos[2], bcg_pos[3])
+        self.updateDisplay(bcg_pos[1], bcg_pos[3], bcg_pos[0], bcg_pos[2])
 
     def erase(self, rgba, x0, y0, centered=True):
         x = x0 - len(rgba[0]) // 2 if centered else x0
@@ -69,17 +69,16 @@ class Layer:
 
         rgb, alpha = rgba_to_rgb(rgba)
 
-        new_array = np.array(self.alpha[bcg_pos[0], bcg_pos[1], bcg_pos[2], bcg_pos[3]]) - np.array(alpha[top_pos[0]:top_pos[1], top_pos[2]:top_pos[3]])
+        new_array = np.array(self.alpha[bcg_pos[1]:bcg_pos[3], bcg_pos[0]:bcg_pos[2]]) - np.array(alpha[top_pos[1]:top_pos[3], top_pos[0]:top_pos[2]])
         new_array[new_array < 0] = 0
-        self.alpha[bcg_pos[0], bcg_pos[1], bcg_pos[2], bcg_pos[3]] = new_array
+        self.alpha[bcg_pos[1]:bcg_pos[3], bcg_pos[0]:bcg_pos[2]] = new_array
 
-        self.updateDisplay(bcg_pos[0], bcg_pos[1], bcg_pos[2], bcg_pos[3])
+        self.updateDisplay(bcg_pos[1], bcg_pos[3], bcg_pos[0], bcg_pos[2])
 
     def drawLine(self, rgba, x0, y0, x1, y1):
         """
         Bresenham's algorithm
         """
-        # TODO: Generate and blur a real line instead of doing something like this...
         dx = x1 - x0
         dy = y1 - y0
 
@@ -112,7 +111,6 @@ class Layer:
         """
         Bresenham's algorithm
         """
-        # TODO: Generate and blur a real line instead of doing something like this...
         dx = x1 - x0
         dy = y1 - y0
 
