@@ -19,10 +19,12 @@ class ToolBarView(QWidget):
         layout = QVBoxLayout()
 
         for filename in os.listdir(icon_directory):
+            name = filename.split(".")[0]
             button = QPushButton(QIcon(icon_directory + filename), '', parent)
             button.setCheckable(True)
-            button.clicked.connect(partial(self.pressButton, filename.split(".")[0]))
-            self.buttons[filename.split(".")[0]] = button
+            button.setObjectName(name)
+            button.clicked.connect(partial(self.pressButton, name))
+            self.buttons[name] = button
             layout.addWidget(button)
 
         self.buttons['brush'].setChecked(True)
@@ -43,3 +45,4 @@ class ToolBarView(QWidget):
         self.parent.drawing_board.controller.tool = self.tools[name]
         self.currentButton = self.buttons[name]
         self.currentButton.setChecked(True)
+        print(self.currentButton.objectName())

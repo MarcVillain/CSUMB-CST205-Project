@@ -7,6 +7,8 @@ from pytoshop.objects.tools.brushes.eraser_o import Eraser
 from pytoshop.objects.tools.brushes.paint_o import Paint
 from pytoshop.objects.tools.brushes.pencil_o import Pencil
 from pytoshop.objects.tools.hand_o import Hand
+from pytoshop.objects.tools.text_o import Text
+from pytoshop.objects.tools.zoom_o import Zoom
 from pytoshop.views.main.drawing_board_v import DrawingBoardView
 from pytoshop.views.main.layers_v import LayersView
 from pytoshop.views.main.menu_bar_v import MenuBarView
@@ -30,9 +32,9 @@ class MainView(QWidget):
                       "brush": Pencil(),
                       "erase": Eraser(),
                       "color": Paint(),
-                      "text": Paint(),
-                      "zoom": Paint(),
-                      "select": Paint()
+                      "text": Text(),
+                      "zoom": Zoom(),
+                      "select": Hand()
                       }
         self.top_bar = TopBarView(self.tools)
         self.toolbar = ToolBarView(self, 'pytoshop/views/images/toolBarImages/', self.tools)
