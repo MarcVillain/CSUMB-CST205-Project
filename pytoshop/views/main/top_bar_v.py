@@ -15,7 +15,8 @@ class TopBarView(QWidget):
         self.setFixedHeight(40)
         layout.setContentsMargins(0, 0, 0, 0)
 
-        layout.addWidget(self.top_bars[0])
+        if self.top_bars[0] is not None:
+            layout.addWidget(self.top_bars[0])
 
         self.setAutoFillBackground(True)
         p = self.palette()

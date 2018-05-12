@@ -4,6 +4,7 @@ class MainController:
         self.view = view
 
         self.control_pressed = False
+        self.alt_pressed = False
         self.mouse_pressed = False
         self.startPoint = None
         self.startBoard = None
@@ -15,6 +16,12 @@ class MainController:
     def onControlKeyReleased(self):
         self.control_pressed = False
         self.view.showArrowCursor()
+
+    def onAltKeyPressed(self):
+        self.alt_pressed = True
+
+    def onAltKeyReleased(self):
+        self.alt_pressed = False
 
     def onMousePressed(self, event):
         self.mouse_pressed = True

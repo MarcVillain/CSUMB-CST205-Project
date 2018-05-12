@@ -61,10 +61,14 @@ class MainView(QWidget):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Control:
             self.controller.onControlKeyPressed()
+        elif event.key() == Qt.Key_Alt:
+            self.controller.onAltKeyPressed()
 
     def keyReleaseEvent(self, event):
         if event.key() == Qt.Key_Control:
             self.controller.onControlKeyReleased()
+        elif event.key() == Qt.Key_Alt:
+            self.controller.onAltKeyReleased()
 
     def mousePressEvent(self, event):
         self.controller.onMousePressed(event)
