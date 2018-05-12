@@ -2,6 +2,7 @@ import numpy as np
 
 from pytoshop.utils.blend_u import normal, blend
 from pytoshop.utils.color_u import rgb_to_rgba, rgba_to_rgb
+from pytoshop.utils.matrix_u import intersect, intersect_both
 
 
 class Layer:
@@ -13,7 +14,7 @@ class Layer:
         self.top_layer = top_layer
 
         self.blend_mode = normal
-        self.name = 'None'
+        self.x, self.y = 0, 0
 
         self.clear()
 
@@ -34,82 +35,45 @@ class Layer:
         self.rgb = filter_func(self.rgb)
         self.updateDisplay(0, self.image.height, 0, self.image.width)
 
-    def draw(self, rgba, x0, y0):
+    def draw(self, rgba, x0, y0, centered=True):
+        x = x0 - len(rgba[0])//2 if centered else x0
+        y = y0 - len(rgba) // 2 if centered else y0
+
+        top_pos, bcg_pos = intersect_both(rgba, self.rgba_display, x, y)
+
+        if top_pos is None or bcg_pos is None:
+            return
+
         rgb, alpha = rgba_to_rgb(rgba)
 
-        size = len(rgb)
-        r = size // 2
-
-        distTop, distBottom = y0 - r, y0 + r + 1
-        padTop, padBottom = max(0, distTop), min(self.image.height, distBottom)
-
-        distLeft, distRight = x0 - r, x0 + r + 1
-        padLeft, padRight = max(0, distLeft), min(self.image.width, distRight)
-
-        out_top = max(0, r - y0)
-        out_bottom = max(0, y0 - self.image.height + 1 + r)
-        out_left = max(0, r - x0)
-        out_right = max(0, x0 - self.image.width + 1 + r)
-
-        top_start_y = out_top
-        top_end_y = size - out_bottom
-        top_start_x = out_left
-        top_end_x = size - out_right
-
-        bcg_start_y = max(0, y0 - r)
-        bcg_end_y = min(self.image.height, y0 + r + 1)
-        bcg_start_x = max(0, x0 - r)
-        bcg_end_x = min(self.image.width, x0 + r + 1)
-
-        if (top_start_x == top_end_x or top_start_y == top_end_y or bcg_start_x == bcg_end_x or bcg_start_y == bcg_end_y or top_start_x < 0 or top_end_x < 0 or top_start_y < 0 or top_end_y < 0 or bcg_start_x < 0 or bcg_end_x < 0 or bcg_start_y < 0 or bcg_end_y < 0):
-            return  # Out of drawing bounds
-
-        top_color = rgb[top_start_y:top_end_y, top_start_x:top_end_x]
-        top_alpha = alpha[top_start_y:top_end_y, top_start_x:top_end_x]
-        bcg_color = self.rgb[bcg_start_y:bcg_end_y, bcg_start_x:bcg_end_x]
-        bcg_alpha = self.alpha[bcg_start_y:bcg_end_y, bcg_start_x:bcg_end_x]
+        top_color = rgb[top_pos[0]:top_pos[1], top_pos[2]:top_pos[3]]
+        top_alpha = alpha[top_pos[0]:top_pos[1], top_pos[2]:top_pos[3]]
+        bcg_color = self.rgb[bcg_pos[0]:bcg_pos[1], bcg_pos[2]:bcg_pos[3]]
+        bcg_alpha = self.alpha[bcg_pos[0]:bcg_pos[1], bcg_pos[2]:bcg_pos[3]]
 
         new_rgb, new_alpha = blend(top_color, top_alpha, bcg_color, bcg_alpha)
 
-        self.rgb[bcg_start_y:bcg_end_y, bcg_start_x:bcg_end_x] = new_rgb
-        self.alpha[bcg_start_y:bcg_end_y, bcg_start_x:bcg_end_x] = new_alpha
+        self.rgb[bcg_pos[0]:bcg_pos[1], bcg_pos[2]:bcg_pos[3]] = new_rgb
+        self.alpha[bcg_pos[0]:bcg_pos[1], bcg_pos[2]:bcg_pos[3]] = new_alpha
 
-        self.updateDisplay(bcg_start_y, bcg_end_y, bcg_start_x, bcg_end_x)
+        self.updateDisplay(bcg_pos[0], bcg_pos[1], bcg_pos[2], bcg_pos[3])
 
-    def erase(self, rgba, x0, y0):
+    def erase(self, rgba, x0, y0, centered=True):
+        x = x0 - len(rgba[0]) // 2 if centered else x0
+        y = y0 - len(rgba) // 2 if centered else y0
+
+        top_pos, bcg_pos = intersect_both(rgba, self.rgba_display, x, y)
+
+        if top_pos is None or bcg_pos is None:
+            return
+
         rgb, alpha = rgba_to_rgb(rgba)
-        size = len(rgb)
-        r = size // 2
 
-        distTop, distBottom = y0 - r, y0 + r + 1
-        padTop, padBottom = max(0, distTop), min(self.image.height, distBottom)
-
-        distLeft, distRight = x0 - r, x0 + r + 1
-        padLeft, padRight = max(0, distLeft), min(self.image.width, distRight)
-
-        out_top = max(0, r - y0)
-        out_bottom = max(0, y0 - self.image.height + 1 + r)
-        out_left = max(0, r - x0)
-        out_right = max(0, x0 - self.image.width + 1 + r)
-
-        top_start_y = out_top
-        top_end_y = size - out_bottom
-        top_start_x = out_left
-        top_end_x = size - out_right
-
-        bcg_start_y = max(0, y0 - r)
-        bcg_end_y = min(self.image.height, y0 + r + 1)
-        bcg_start_x = max(0, x0 - r)
-        bcg_end_x = min(self.image.width, x0 + r + 1)
-
-        if (top_start_x == top_end_x or top_start_y == top_end_y or bcg_start_x == bcg_end_x or bcg_start_y == bcg_end_y or top_start_x < 0 or top_end_x < 0 or top_start_y < 0 or top_end_y < 0 or bcg_start_x < 0 or bcg_end_x < 0 or bcg_start_y < 0 or bcg_end_y < 0):
-            return  # Out of drawing bounds
-
-        new_array = np.array(self.alpha[bcg_start_y:bcg_end_y, bcg_start_x:bcg_end_x]) - np.array(alpha[top_start_y:top_end_y, top_start_x:top_end_x])
+        new_array = np.array(self.alpha[bcg_pos[0], bcg_pos[1], bcg_pos[2], bcg_pos[3]]) - np.array(alpha[top_pos[0]:top_pos[1], top_pos[2]:top_pos[3]])
         new_array[new_array < 0] = 0
-        self.alpha[bcg_start_y:bcg_end_y, bcg_start_x:bcg_end_x] = new_array
+        self.alpha[bcg_pos[0], bcg_pos[1], bcg_pos[2], bcg_pos[3]] = new_array
 
-        self.updateDisplay(bcg_start_y, bcg_end_y, bcg_start_x, bcg_end_x)
+        self.updateDisplay(bcg_pos[0], bcg_pos[1], bcg_pos[2], bcg_pos[3])
 
     def drawLine(self, rgba, x0, y0, x1, y1):
         """
@@ -177,16 +141,16 @@ class Layer:
                 D -= 2 * dx
             D += 2 * dy
 
-    def updateDisplay(self, padTop, padBottom, padLeft, padRight):
+    def updateDisplay(self, start_y, end_y, start_x, end_x):
         if self.bottom_layer is not None:
-            rgb_bottom, alpha_bottom = rgba_to_rgb(self.bottom_layer.rgba_display[padTop:padBottom, padLeft:padRight])
-            new_rgb, new_alpha = blend(self.rgb[padTop:padBottom, padLeft:padRight], self.alpha[padTop:padBottom, padLeft:padRight], rgb_bottom, alpha_bottom, self.blend_mode)
-            self.rgba_display[padTop:padBottom, padLeft:padRight] = rgb_to_rgba(new_rgb, new_alpha)
+            rgb_bottom, alpha_bottom = rgba_to_rgb(self.bottom_layer.rgba_display[start_y:end_y, start_x:end_x])
+            new_rgb, new_alpha = blend(self.rgb[start_y:end_y, start_x:end_x], self.alpha[start_y:end_y, start_x:end_x], rgb_bottom, alpha_bottom, self.blend_mode)
+            self.rgba_display[start_y:end_y, start_x:end_x] = rgb_to_rgba(new_rgb, new_alpha)
         else:
-            self.rgba_display[padTop:padBottom, padLeft:padRight] = rgb_to_rgba(self.rgb[padTop:padBottom, padLeft:padRight], self.alpha[padTop:padBottom, padLeft:padRight])
+            self.rgba_display[start_y:end_y, start_x:end_x] = rgb_to_rgba(self.rgb[start_y:end_y, start_x:end_x], self.alpha[start_y:end_y, start_x:end_x])
 
         if self.top_layer is not None:
-            self.top_layer.updateDisplay(padTop, padBottom, padLeft, padRight)
+            self.top_layer.updateDisplay(start_y, end_y, start_x, end_x)
 
     def fill_checker(self, colorA, colorB, size):
         color = (colorA, colorB)
