@@ -1,9 +1,9 @@
 
 # Pytoshop
 
-Pytoshop is a pain-like/photoshop-like tool, alowing people to draw, add filters and do all kinds of modifications to their images.
+Pytoshop is a paint-like/photoshop-like tool, allowing people to draw, add filters and do all kinds of modifications to their images.
 
-This project is realized as part of a California State University of Monterey Bay project for the CST205 course.
+This project was developed as part of a California State University of Monterey Bay project for the CST205 course.
 
 ## Getting Started
 
@@ -31,10 +31,10 @@ python3 ./start.py
 
 ## Authors
 
-* **Pernille Dahl** - *Developper*
-* **Joey Thomas** - *Developper*
-* **Marc Villain** - *Developper*
-* **Sam Westigard** - *Developper*
+* **Pernille Dahl** - *Developer*
+* **Joey Thomas** - *Developer*
+* **Marc Villain** - *Developer*
+* **Sam Westigard** - *Developer*
 
 ## License
 
