@@ -8,10 +8,10 @@ from pytoshop.utils.color_u import rgba_to_rgb, rgb_to_rgba
 
 class DrawingBoardView(QLabel):
 
-    def __init__(self, parent, width, height, image_name=None):
+    def __init__(self, parent, width, height, color):
         super().__init__(parent)
         self.parent = parent
-        self.controller = DrawingBoardController(parent.controller, self, width, height, image_name)
+        self.controller = DrawingBoardController(parent.controller, self, width, height, color)
         self.refresh()
         self.setMouseTracking(True)
         self.setGeometry(parent.width()//2-100-width//2, parent.height()//2+40-height//2, width, height)

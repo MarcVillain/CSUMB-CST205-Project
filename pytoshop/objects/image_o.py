@@ -8,7 +8,7 @@ from pytoshop.utils.color_u import rgb_to_rgba
 
 class Image:
 
-    def __init__(self, width, height, image_name=None):
+    def __init__(self, width, height, color):
         self.channel_count = 4
         self.width = width
         self.height = height
@@ -17,7 +17,7 @@ class Image:
         self.scale, self.min_scale, self.max_scale = 1, 0.5, 2.5
 
         self.current_layer = Layer(self, pos=0)
-        self.current_layer.fill([255, 255, 255])
+        self.current_layer.fill([color[0], color[1], color[2]], color[3] / 255)
 
         self.top_layer = Layer(self, self.current_layer, None)
         self.current_layer.top_layer = self.top_layer

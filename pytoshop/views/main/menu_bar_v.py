@@ -12,7 +12,7 @@ class MenuBarView(QMenuBar):
         self.parent = parent
         menuItems = {
             'File': {
-                'New': {'icon': 'new.png', 'trigger': self.doNothing},
+                'New': {'icon': 'new.png', 'trigger': parent.app.new},
                 'Load': {'icon': 'open.png', 'trigger': parent.loadImage},
                 'Save': {'icon': 'save.png', 'trigger': parent.saveImage},
                 'Exit': {'icon': 'exit.png', 'trigger': parent.close}

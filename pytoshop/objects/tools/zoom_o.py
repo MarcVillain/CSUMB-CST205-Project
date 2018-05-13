@@ -9,7 +9,7 @@ class Zoom(Tool):
         super().__init__()
         self.isPressed = False
 
-        self.top_bar = QLabel('    Click = Zoom In    Click+Alt = Zoom Out')
+        self.top_bar = QLabel('    Click = Zoom In    Click+Alt = Zoom Out    Click+Drag Right/Left = Zoom In/Out')
 
     def onMousePressed(self, controller, x, y):
         self.isPressed = True

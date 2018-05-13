@@ -8,7 +8,7 @@ class Hand(Tool):
     def __init__(self):
         super().__init__()
 
-        self.top_bar = QLabel('    Click and drag to move the drawing board.')
+        self.top_bar = QLabel('    Click and drag to move the drawing board.   (Shortcut: Hold Control or Cmd with any other tools)')
 
     def onMousePressed(self, controller, x, y):
         controller.main_c.onControlKeyPressed()
