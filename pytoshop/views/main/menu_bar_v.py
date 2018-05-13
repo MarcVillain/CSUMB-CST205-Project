@@ -16,12 +16,20 @@ class MenuBarView(QMenuBar):
                 'Export': {'icon': 'export.png', 'trigger': self.doNothing},
                 'Exit': {'icon': 'exit.png', 'trigger': parent.close}
             },
-            'Layer': {
+            'Edit': {
                 'Filters': {
                     'Grayscale': {'trigger': self.doNothing},
+                    'Cool': {'trigger': self.doNothing},
+                    'Warm': {'trigger': self.doNothing},
                     'Sepia': {'trigger': self.doNothing},
+                    'Reduce Noise': {'trigger': self.doNothing},
+                    'Blur': {'trigger': self.doNothing},
                     'Negative': {'trigger': self.doNothing}
                 }
+            },
+            'Layer' : {
+                'Add New Layer': {'trigger':self.doNothing},
+                'Remove Layer': {'trigger':self.doNothing}
             }
         }
 
