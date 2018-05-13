@@ -44,3 +44,7 @@ class DrawingBoardController:
         self.image.top_layer.clear()
         self.view.refresh()
         self.main_c.view.showArrowCursor()
+
+    def onMouseLeave(self, event):
+        self.image.top_layer.clear()
+        self.view.refresh()

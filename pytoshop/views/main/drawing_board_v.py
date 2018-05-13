@@ -45,3 +45,6 @@ class DrawingBoardView(QLabel):
     def mouseReleaseEvent(self, event):
         self.parent.mouseReleaseEvent(event)
         self.controller.onMouseReleased(event)
+
+    def leaveEvent(self, event):
+        self.controller.onMouseLeave(event)

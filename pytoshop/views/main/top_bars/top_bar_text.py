@@ -28,12 +28,13 @@ class TopBarText(QWidget):
 
         layout.addWidget(QLabel('Text: '))
         self.textbox = QLineEdit(self)
+        self.textbox.setStyleSheet('selection-background-color: white; color: black;')
         layout.addWidget(self.textbox)
 
         self.button = QPushButton('Set Text', self)
+        self.button.setStyleSheet('selection-background-color: white; color: black;')
         self.button.clicked.connect(self.on_click)
         layout.addWidget(self.button)
-
 
         layout.addStretch()
         self.setLayout(layout)

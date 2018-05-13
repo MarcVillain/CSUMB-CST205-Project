@@ -56,7 +56,7 @@ class LayersView(QWidget):
         self.layers = []
         layout = QVBoxLayout()
 
-        # Blending Modes
+        # --- Blending Modes --- #
         self.blend_modes = {
             'Normal': normal,
             'Multiply': multiply,
@@ -79,7 +79,7 @@ class LayersView(QWidget):
 
         layout.addWidget(self.blend_list)
 
-        # Layers list
+        # --- Layers list --- #
         self.layers = []
         self.list = QListWidget()
 
@@ -104,6 +104,7 @@ class LayersView(QWidget):
 
         layout.addWidget(self.list)
 
+        # --- Styling --- #
         self.list.setStyleSheet('selection-background-color: #cbcbcb; border: none;')
         layout.setContentsMargins(0, 0, 0, 0)
         self.setContentsMargins(0, 0, 0, 0)
