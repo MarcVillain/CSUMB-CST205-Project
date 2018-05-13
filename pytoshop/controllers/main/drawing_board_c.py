@@ -3,11 +3,11 @@ from pytoshop.objects.image_o import Image
 
 class DrawingBoardController:
 
-    def __init__(self, main_c, view, width, height, image_name=None):
+    def __init__(self, main_c, view, width, height, color):
         self.main_c = main_c
         self.view = view
 
-        self.image = Image(width, height, image_name)
+        self.image = Image(width, height, color)
         self.tool = self.main_c.view.tools['paint']
 
         self.lastPos = None

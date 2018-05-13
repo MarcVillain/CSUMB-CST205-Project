@@ -19,15 +19,13 @@ from pytoshop.views.main.top_bar_v import TopBarView
 
 class MainView(QWidget):
 
-    def __init__(self):
+    def __init__(self, app, image_width=500, image_height=500, image_color=(255, 255, 255, 255)):
         super().__init__()
+        self.app = app
         self.controller = MainController(self)
 
-        self.setWindowTitle('Pytoshop')
         self.initGeometry(800, 520)
 
-
-        # TODO: connect your tools here
         self.tools = {"paint": Paint(),
                       "pencil": Pencil(),
                       "eraser": Eraser(),
@@ -38,7 +36,7 @@ class MainView(QWidget):
                       }
         self.topBar = TopBarView(self.tools)
         self.toolbar = ToolBarView(self, 'pytoshop/views/images/toolBarImages/', self.tools)
-        self.drawing_board = DrawingBoardView(self, 500, 500)
+        self.drawing_board = DrawingBoardView(self, image_width, image_height, image_color)
         self.menuBar = MenuBarView(self)
         self.layers = LayersView(self, self.drawing_board.controller.image)
 
