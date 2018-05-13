@@ -1,4 +1,6 @@
 import numpy as np
+import cv2 as cv
+
 
 from pytoshop.utils.blend_u import normal, blend
 from pytoshop.utils.color_u import rgb_to_rgba, rgba_to_rgb
@@ -166,4 +168,11 @@ class Layer:
             if (j+1) % size == 0:
                 colorID = (colorID + 1) % 2
 
+        self.updateDisplay(0, self.image.height, 0, self.image.width)
+
+    def load_image(self, image_name):
+        self.rgb = cv.imread(image_name)
+        # TODO added this line to get blend_u working, should be removed later
+        self.rgb = cv.resize(self.rgb, (500, 500))
+        self.alpha = np.full((self.image.height, self.image.width, 1), 1.)
         self.updateDisplay(0, self.image.height, 0, self.image.width)
