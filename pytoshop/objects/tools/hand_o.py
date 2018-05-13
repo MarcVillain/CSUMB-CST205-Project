@@ -6,7 +6,6 @@ class Hand(Tool):
 
     def __init__(self):
         super().__init__()
-        self.top_bar = None
 
     def onMousePressed(self, controller, x, y):
         controller.main_c.onControlKeyPressed()

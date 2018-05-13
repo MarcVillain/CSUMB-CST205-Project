@@ -8,23 +8,27 @@ from PyQt5.QtWidgets import QPushButton, QWidget, QVBoxLayout
 
 class ToolBarView(QWidget):
 
-    def __init__(self, parent, icon_directory):
+    def __init__(self, parent, icon_directory, tools):
         super().__init__()
-        layout = QVBoxLayout()
+
+        self.parent = parent
+        self.tools = tools
         self.setFixedWidth(40)
+        self.buttons = {}
 
-        self.buttons = []
+        layout = QVBoxLayout()
 
-        i = 0
         for filename in os.listdir(icon_directory):
+            name = filename.split(".")[0]
             button = QPushButton(QIcon(icon_directory + filename), '', parent)
             button.setCheckable(True)
-            button.clicked.connect(partial(self.pressButton, i))
-            self.buttons.append(button)
+            button.setObjectName(name)
+            button.clicked.connect(partial(self.pressButton, name))
+            self.buttons[name] = button
             layout.addWidget(button)
-            i += 1
 
-        self.buttons[0].setChecked(True)
+        self.buttons['brush'].setChecked(True)
+        self.currentButton = self.buttons['brush']
 
         layout.addStretch()
         self.setLayout(layout)
@@ -34,13 +38,12 @@ class ToolBarView(QWidget):
         p.setColor(self.backgroundRole(), Qt.darkGray)
         self.setPalette(p)
 
-    def pressButton(self, pos):
-        i = 0
-        while i < pos:
-            self.buttons[i].setChecked(False)
-            i += 1
-        self.buttons[i].setChecked(True)
-        i += 1
-        while i < len(self.buttons):
-            self.buttons[i].setChecked(False)
-            i += 1
+    # 1. set the current tool to the currently pressed tool
+    # 2. unchecks the previous tool
+    def pressButton(self, name):
+        self.currentButton.setChecked(False)
+        self.parent.drawing_board.controller.tool = self.tools[name]
+        self.parent.topBar.changeTopBar(name)
+        self.currentButton = self.buttons[name]
+        self.currentButton.setChecked(True)
+        print(self.currentButton.objectName())

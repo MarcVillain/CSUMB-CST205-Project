@@ -7,6 +7,8 @@ from pytoshop.objects.tools.brushes.eraser_o import Eraser
 from pytoshop.objects.tools.brushes.paint_o import Paint
 from pytoshop.objects.tools.brushes.pencil_o import Pencil
 from pytoshop.objects.tools.hand_o import Hand
+from pytoshop.objects.tools.text_o import Text
+from pytoshop.objects.tools.zoom_o import Zoom
 from pytoshop.views.main.drawing_board_v import DrawingBoardView
 from pytoshop.views.main.layers_v import LayersView
 from pytoshop.views.main.menu_bar_v import MenuBarView
@@ -23,16 +25,24 @@ class MainView(QWidget):
         self.setWindowTitle('Pytoshop')
         self.initGeometry(800, 520)
 
-        self.menuBar = MenuBarView(self)
 
-        self.tools = [Paint(), Pencil(), Eraser()]
-        self.top_bar = TopBarView(self.tools)
-        self.toolbar = ToolBarView(self, 'pytoshop/views/images/')
+        # TODO: connect your tools here
+        self.tools = {"paint": Paint(),
+                      "brush": Pencil(),
+                      "erase": Eraser(),
+                      "color": Paint(),
+                      "text": Text(),
+                      "zoom": Zoom(),
+                      "select": Hand()
+                      }
+        self.topBar = TopBarView(self.tools)
+        self.toolbar = ToolBarView(self, 'pytoshop/views/images/toolBarImages/', self.tools)
         self.drawing_board = DrawingBoardView(self, 500, 500)
+        self.menuBar = MenuBarView(self)
         self.layers = LayersView(self, self.drawing_board.controller.image)
 
         layout = QGridLayout()
-        layout.addWidget(self.top_bar, 1, 1, 1, 10)
+        layout.addWidget(self.topBar, 1, 1, 1, 10)
         layout.addWidget(self.toolbar, 2, 1, 8, 1)  # addWidget(row, col, rowspan == height, colspan == width)
         invisible = QWidget()
         invisible.hide()

@@ -8,7 +8,7 @@ class DrawingBoardController:
         self.view = view
 
         self.image = Image(width, height, image_name)
-        self.tool = self.main_c.view.tools[0]
+        self.tool = self.main_c.view.tools['brush']
 
         self.lastPos = None
         self.mouse_pressed = False
