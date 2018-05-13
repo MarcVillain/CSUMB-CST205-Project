@@ -18,11 +18,13 @@ class LayersItem(QWidget):
 
         self.pixmap = QLabel()
         layout.addWidget(self.pixmap)
-        layout.addWidget(QLabel('Layer 0'))
+        layout.addWidget(QLabel('Layer ' + str(layer.pos)))
 
         self.refresh()
         layout.addStretch()
         self.setLayout(layout)
+
+        self.setStyleSheet('border: none;')
 
     def refresh(self):
         height, width = self.layer.rgb.shape[:2]
@@ -41,8 +43,6 @@ class LayersItem(QWidget):
         image = QImage(rgba, new_width, new_height, 4*new_width, QImage.Format_RGBA8888)
         pixmap = QPixmap(image)
         self.pixmap.setPixmap(pixmap)
-
-        self.setStyleSheet('border: none;')
 
 
 class LayersView(QWidget):
@@ -86,8 +86,10 @@ class LayersView(QWidget):
         layer = image.top_layer.bottom_layer
         while layer is not None and layer.pos != -1:
             item = LayersItem(layer)
-            list_item = QListWidgetItem(self.list)
+            list_item = QListWidgetItem()
             list_item.setSizeHint(item.sizeHint())
+            list_item.pos = layer.pos
+
             self.list.addItem(list_item)
             self.list.setItemWidget(list_item, item)
             self.layers.insert(0, item)
@@ -107,13 +109,33 @@ class LayersView(QWidget):
         self.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
 
+        self.list.itemClicked.connect(self.onClickItem)
+
         self.setAutoFillBackground(True)
         p = self.palette()
         p.setColor(self.backgroundRole(), Qt.darkGray)
         self.setPalette(p)
 
+    def onClickItem(self, item):
+        self.image.current_layer = self.layers[len(self.layers) - item.pos - 1].layer
+
+    def addLayer(self, layer):
+        item = LayersItem(layer)
+        list_item = QListWidgetItem()
+        list_item.setSizeHint(item.sizeHint())
+        list_item.pos = layer.pos
+
+        new_pos = len(self.layers) - layer.pos
+
+        self.list.insertItem(new_pos, list_item)
+        self.list.setItemWidget(list_item, item)
+        self.layers.insert(new_pos, item)
+
+        self.list.setCurrentRow(new_pos)
+        self.image.current_layer = layer
+
     def refresh(self, i):
-        self.layers[i].refresh()
+        self.layers[len(self.layers) - i - 1].refresh()
 
     def onChangeBlendMode(self):
         # Change blend mode

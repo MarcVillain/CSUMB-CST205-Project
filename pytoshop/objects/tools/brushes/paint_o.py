@@ -30,7 +30,7 @@ class Paint(Brush):
         radius = self.size // 2 - 1
         size = self.size * 2 - 1
         center = (size - 1) // 2
-        r, g, b = self.color
+        r, g, b, a = self.color
 
         # Create empty matrix with sharp circle in it
         mat = np.full((size, size, 4), (r, g, b, 0), np.uint8)

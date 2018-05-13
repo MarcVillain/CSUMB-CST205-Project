@@ -1,3 +1,5 @@
+from functools import partial
+
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenuBar, QAction
 
@@ -10,9 +12,8 @@ class MenuBarView(QMenuBar):
         menuItems = {
             'File': {
                 'New': {'icon': 'new.png', 'trigger': self.doNothing},
-                'Open': {'icon': 'open.png', 'trigger': self.doNothing},
-                'Save': {'icon': 'save.png', 'trigger': self.doNothing},
-                'Save As': {'icon': 'saveAs.png', 'trigger': self.doNothing},
+                'Import': {'icon': 'open.png', 'trigger': parent.loadImage},
+                'Save': {'icon': 'save.png', 'trigger': parent.saveImage},
                 'Export': {'icon': 'export.png', 'trigger': self.doNothing},
                 'Exit': {'icon': 'exit.png', 'trigger': parent.close}
             },

@@ -1,4 +1,9 @@
+import numpy as np
+
+import cv2
+
 from pytoshop.objects.layer_o import Layer
+from pytoshop.utils.color_u import rgb_to_rgba
 
 
 class Image:
@@ -38,21 +43,18 @@ class Image:
         self.current_layer.top_layer = new_layer
         self.current_layer = new_layer
 
+        return new_layer
+
     def map(self, x0, y0, width, height):
         x = int(x0 * self.width / width)
         y = int(y0 * self.height / height)
         return x, y
 
-    # TODO connect load gui with this function
-    def load(self, image_name):
+    def load(self, main_v, location):
+        image = cv2.cvtColor(cv2.imread(location, -1), cv2.COLOR_BGR2RGBA)
         self.addLayer()
-        image = cv2.imread(image_name, -1)
-        self.current_layer = image
+        main_v.layers.addLayer(self.current_layer)
+        self.current_layer.draw(image, self.width//2, self.height//2)
 
-
-    # TODO connect save gui with this function
     def save(self, location):
-        cv2.imwrite(location, self.top_layer.bottom_layer.rgba_display)
-
-
-
+        cv2.imwrite(location + ".png", cv2.cvtColor(self.top_layer.bottom_layer.rgba_display, cv2.COLOR_RGBA2BGRA))

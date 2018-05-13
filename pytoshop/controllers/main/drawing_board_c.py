@@ -15,6 +15,7 @@ class DrawingBoardController:
 
     def onMousePressed(self, event):
         if not self.main_c.control_pressed:
+            self.main_c.view.layers.refresh(self.image.current_layer.pos)
             self.mouse_pressed = True
             self.lastPos = self.image.map(event.x(), event.y(), self.view.width(), self.view.height())
             self.tool.onMousePressed(self, self.lastPos[0], self.lastPos[1])
@@ -30,6 +31,7 @@ class DrawingBoardController:
 
     def onMouseReleased(self, event):
         if not self.main_c.control_pressed:
+            self.main_c.view.layers.refresh(self.image.current_layer.pos)
             self.mouse_pressed = False
             self.tool.onMouseReleased(self)
 

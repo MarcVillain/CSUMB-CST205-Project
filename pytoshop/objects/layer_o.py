@@ -3,6 +3,7 @@ import numpy as np
 from pytoshop.utils.blend_u import normal, blend
 from pytoshop.utils.color_u import rgb_to_rgba, rgba_to_rgb
 from pytoshop.utils.matrix_u import intersect, intersect_both
+from pytoshop.views.main.layers_v import LayersItem
 
 
 class Layer:

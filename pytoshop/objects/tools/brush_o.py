@@ -4,7 +4,7 @@ from pytoshop.views.main.top_bars.top_bar_brush import TopBarBrush
 
 class Brush(Tool):
 
-    def __init__(self, size=20, color=(0, 0, 0), hardness=100, opacity=100):
+    def __init__(self, size=20, color=(0, 0, 0, 0), hardness=100, opacity=100):
         super().__init__()
 
         self.size = size

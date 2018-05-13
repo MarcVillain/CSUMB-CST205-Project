@@ -25,7 +25,7 @@ class MainView(QWidget):
 
         self.menuBar = MenuBarView(self)
 
-        self.tools = [Hand(), Pencil(), Eraser()]
+        self.tools = [Paint(), Pencil(), Eraser()]
         self.top_bar = TopBarView(self.tools)
         self.toolbar = ToolBarView(self, 'pytoshop/views/images/')
         self.drawing_board = DrawingBoardView(self, 500, 500)
@@ -96,50 +96,21 @@ class MainView(QWidget):
     def showArrowCursor(self):
         QApplication.setOverrideCursor(Qt.ArrowCursor)
 
-    class LoadFileDialog(QWidget):
+    # POPUPS #
+    def loadImage(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        filePath, _ = QFileDialog.getOpenFileName(self, "Load Image", "", "png (*.png)", options=options)
 
-        def __init__(self):
-            super().__init__()
-            self.title = 'Pytoshop'
-            self.left = 10
-            self.top = 10
-            self.width = 640
-            self.height = 480
-            self.setUI()
+        if filePath:
+            self.drawing_board.controller.image.load(self, filePath)
+            self.drawing_board.refresh()
+            self.layers.refresh(self.drawing_board.controller.image.current_layer.pos)
 
-        def setUI(self):
-            self.setWindowTitle(self.title)
-            self.setGeometry(self.left, self.top, self.width, self.height)
-            self.openFileNameDialog()
+    def saveImage(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        filePath, _ = QFileDialog.getSaveFileName(self, "Save Image", "", "png (*.png)", options=options)
 
-        def openFileNameDialog(self):
-            options = QFileDialog.Options()
-            options |= QFileDialog.DontUseNativeDialog
-            filePath, _ = QFileDialog.getOpenFileName(self, "Load Image", "",
-                                                      "png (*.png)", options=options)
-            return filePath
-            # TODO conect filepath to load function
-
-    class SaveFileDialog(QWidget):
-
-        def __init__(self):
-            super().__init__()
-            self.title = 'Pytoshop'
-            self.left = 10
-            self.top = 10
-            self.width = 640
-            self.height = 480
-            self.setUI()
-
-        def setUI(self):
-            self.setWindowTitle(self.title)
-            self.setGeometry(self.left, self.top, self.width, self.height)
-            self.openFileNameDialog()
-
-        def saveFileDialog(self):
-            options = QFileDialog.Options()
-            options |= QFileDialog.DontUseNativeDialog
-            filePath, _ = QFileDialog.getSaveFileName(self, "Save Image", "",
-                                                      "png (*.png)", options=options)
-            return filePath
-            # TODO connect filepath to save function
+        if filePath:
+            self.drawing_board.controller.image.save(filePath)
