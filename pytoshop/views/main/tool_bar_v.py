@@ -27,8 +27,8 @@ class ToolBarView(QWidget):
             self.buttons[name] = button
             layout.addWidget(button)
 
-        self.buttons['brush'].setChecked(True)
-        self.currentButton = self.buttons['brush']
+        self.buttons['paint'].setChecked(True)
+        self.currentButton = self.buttons['paint']
 
         layout.addStretch()
         self.setLayout(layout)

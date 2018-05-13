@@ -1,5 +1,4 @@
 from pytoshop.objects.tool_o import Tool
-from pytoshop.views.main.top_bars.top_bar_brush import TopBarBrush
 
 
 class Brush(Tool):
@@ -11,5 +10,3 @@ class Brush(Tool):
         self.color = color
         self.hardness = hardness
         self.opacity = opacity
-
-        self.top_bar = TopBarBrush(self)

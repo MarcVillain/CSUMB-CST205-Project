@@ -4,7 +4,7 @@ from pytoshop.widgets.color_frame_w import ColorFrameWidget
 from pytoshop.widgets.slider_widget_w import SliderWidget
 
 
-class TopBarBrush(QWidget):
+class TopBarPaint(QWidget):
 
     def __init__(self, tool):
         super().__init__()

@@ -2,12 +2,15 @@ import cv2
 import numpy as np
 
 from pytoshop.objects.tools.brush_o import Brush
+from pytoshop.views.main.top_bars.top_bar_paint import TopBarPaint
 
 
 class Paint(Brush):
 
     def __init__(self):
         super().__init__()
+
+        self.top_bar = TopBarPaint(self)
 
     def onMousePressed(self, controller, x0, y0):
         controller.image.current_layer.draw(self.generate(), x0, y0)

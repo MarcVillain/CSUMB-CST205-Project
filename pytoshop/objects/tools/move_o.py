@@ -1,4 +1,5 @@
 import numpy as np
+from PyQt5.QtWidgets import QLabel
 
 from scipy.ndimage import shift
 
@@ -11,6 +12,8 @@ class Move(Tool):
         super().__init__()
 
         self.isPressed = False
+
+        self.top_bar = QLabel('&nbsp;&nbsp;&nbsp;&nbsp;(beta) Click and drag slowly to move the layer around. &nbsp; <b>/!\ Every pixel moved outside the drawing board will be lost /!\</b>')
 
     def onMousePressed(self, controller, x, y):
         self.isPressed = True

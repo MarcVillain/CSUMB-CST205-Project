@@ -1,3 +1,5 @@
+from PyQt5.QtWidgets import QLabel
+
 from pytoshop.objects.tool_o import Tool
 
 
@@ -6,6 +8,8 @@ class Zoom(Tool):
     def __init__(self):
         super().__init__()
         self.isPressed = False
+
+        self.top_bar = QLabel('    Click = Zoom In    Click+Alt = Zoom Out')
 
     def onMousePressed(self, controller, x, y):
         self.isPressed = True

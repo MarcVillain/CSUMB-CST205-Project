@@ -14,7 +14,7 @@ class TopBarView(QWidget):
         self.layout = QHBoxLayout()
         self.setFixedHeight(40)
         self.layout.setContentsMargins(0, 0, 0, 0)
-        self.currentBar = self.top_bars["brush"]
+        self.currentBar = self.top_bars['paint']
         if self.currentBar is not None:
             self.layout.addWidget(self.currentBar)
 
