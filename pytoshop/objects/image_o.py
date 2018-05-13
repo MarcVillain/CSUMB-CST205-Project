@@ -42,3 +42,17 @@ class Image:
         x = int(x0 * self.width / width)
         y = int(y0 * self.height / height)
         return x, y
+
+    # TODO connect load gui with this function
+    def load(self, image_name):
+        self.addLayer()
+        image = cv2.imread(image_name, -1)
+        self.current_layer = image
+
+
+    # TODO connect save gui with this function
+    def save(self, location):
+        cv2.imwrite(location, self.top_layer.bottom_layer.rgba_display)
+
+
+

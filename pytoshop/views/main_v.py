@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QDesktopWidget, QWidget, QGridLayout
+from PyQt5.QtWidgets import QDesktopWidget, QWidget, QGridLayout, QFileDialog
 
 from pytoshop.controllers.main_c import MainController
 from pytoshop.objects.tools.brushes.eraser_o import Eraser
@@ -95,3 +95,51 @@ class MainView(QWidget):
 
     def showArrowCursor(self):
         QApplication.setOverrideCursor(Qt.ArrowCursor)
+
+    class LoadFileDialog(QWidget):
+
+        def __init__(self):
+            super().__init__()
+            self.title = 'Pytoshop'
+            self.left = 10
+            self.top = 10
+            self.width = 640
+            self.height = 480
+            self.setUI()
+
+        def setUI(self):
+            self.setWindowTitle(self.title)
+            self.setGeometry(self.left, self.top, self.width, self.height)
+            self.openFileNameDialog()
+
+        def openFileNameDialog(self):
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            filePath, _ = QFileDialog.getOpenFileName(self, "Load Image", "",
+                                                      "png (*.png)", options=options)
+            return filePath
+            # TODO conect filepath to load function
+
+    class SaveFileDialog(QWidget):
+
+        def __init__(self):
+            super().__init__()
+            self.title = 'Pytoshop'
+            self.left = 10
+            self.top = 10
+            self.width = 640
+            self.height = 480
+            self.setUI()
+
+        def setUI(self):
+            self.setWindowTitle(self.title)
+            self.setGeometry(self.left, self.top, self.width, self.height)
+            self.openFileNameDialog()
+
+        def saveFileDialog(self):
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            filePath, _ = QFileDialog.getSaveFileName(self, "Save Image", "",
+                                                      "png (*.png)", options=options)
+            return filePath
+            # TODO connect filepath to save function
