@@ -2,7 +2,7 @@ import cv2
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QListWidget, QHBoxLayout, QLabel, QListWidgetItem, QWidget, QAbstractItemView, QComboBox, \
-    QVBoxLayout
+    QVBoxLayout, QPushButton
 
 from pytoshop.utils.blend_u import *
 from pytoshop.utils.color_u import rgb_to_rgba
@@ -104,6 +104,22 @@ class LayersView(QWidget):
 
         layout.addWidget(self.list)
 
+        # --- Add and Remove buttons --- #
+        buttons = QHBoxLayout()
+
+        self.add = QPushButton('+')
+        self.remove = QPushButton('-')
+
+        self.add.clicked.connect(self.onClickAdd)
+        self.remove.clicked.connect(self.onClickRemove)
+
+        buttons.addWidget(self.add)
+        buttons.addWidget(self.remove)
+
+        buttons.setContentsMargins(0, 0, 0, 0)
+
+        layout.addLayout(buttons)
+
         # --- Styling --- #
         self.list.setStyleSheet('selection-background-color: #cbcbcb; border: none;')
         layout.setContentsMargins(0, 0, 0, 0)
@@ -118,8 +134,16 @@ class LayersView(QWidget):
         self.setPalette(p)
 
     def onClickItem(self, item):
-        self.image.current_layer = self.layers[len(self.layers) - item.pos - 1].layer
+        self.image.current_layer = self.layers[self.list.row(item)].layer
         self.blend_list.setCurrentIndex(list(self.blend_modes.values()).index(self.image.current_layer.blend_mode))
+
+    def onClickAdd(self):
+        self.image.addLayer(self.parent)
+        self.parent.drawing_board.refresh()
+
+    def onClickRemove(self):
+        self.image.removeLayer(self.parent)
+        self.parent.drawing_board.refresh()
 
     def addLayer(self, layer):
         item = LayersItem(layer)
@@ -135,6 +159,12 @@ class LayersView(QWidget):
 
         self.list.setCurrentRow(new_pos)
         self.image.current_layer = layer
+
+    def removeLayer(self, layer):
+        new_pos = len(self.layers) - layer.pos - 1
+
+        self.list.takeItem(new_pos)
+        self.layers.pop(new_pos)
 
     def refresh(self, i):
         self.layers[len(self.layers) - i - 1].refresh()
