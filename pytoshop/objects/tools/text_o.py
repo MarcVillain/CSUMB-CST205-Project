@@ -11,6 +11,7 @@ class Text(Tool):
 
         self.text = ""
         self.fontScale = 1
+        self.thickness = 1
         self.font = cv2.FONT_HERSHEY_SIMPLEX
         self.color = (0, 100, 250, 255)
         self.top_bar = TopBarText(self)
@@ -30,6 +31,6 @@ class Text(Tool):
 
         mat = np.full((height, width, 4), 0, np.uint8)
 
-        cv2.putText(mat, self.text, (x0, y0), self.font, self.fontScale, self.color, 1)
+        cv2.putText(mat, self.text, (x0, y0), self.font, self.fontScale, self.color, self.thickness)
 
         return mat
