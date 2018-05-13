@@ -115,7 +115,7 @@ class MainView(QWidget):
         if filePath:
             self.drawing_board.controller.image.load(self, filePath)
             self.drawing_board.refresh()
-            self.layers.refresh(self.drawing_board.controller.image.current_layer.pos)
+            self.layers.refresh()
 
     def saveImage(self):
         options = QFileDialog.Options()

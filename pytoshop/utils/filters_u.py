@@ -3,19 +3,19 @@ import cv2
 
 class FiltersUtil:
 
-    def grayScaleFilter(rgb):
+    def grayScale(rgb):
         return cv2.applyColorMap(rgb, cv2.COLORMAP_BONE)
 
-    def coolFilter(rgb):
+    def cool(rgb):
         return cv2.applyColorMap(rgb, cv2.COLORMAP_OCEAN)
 
-    def warmFilter(rgb):
+    def warm(rgb):
         return cv2.applyColorMap(rgb, cv2.COLORMAP_OCEAN)
 
-    def sepiaFilter(rgb):
+    def sepia(rgb):
         return cv2.applyColorMap(rgb, cv2.COLORMAP_PINK)
 
-    def negativeFilter(rgb):
+    def negative(rgb):
         return cv2.bitwise_not(rgb)
 
     def reduceNoise(rgb):

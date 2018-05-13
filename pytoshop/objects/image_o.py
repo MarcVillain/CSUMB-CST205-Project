@@ -45,6 +45,8 @@ class Image:
         # Add layer to LayersView
         main_v.layers.addLayer(self.current_layer)
 
+        self.current_layer.updateDisplay(0, self.height, 0, self.width)
+
         return new_layer
 
     def removeLayer(self, main_v):
@@ -70,6 +72,8 @@ class Image:
 
         # Change current layer
         self.current_layer = self.current_layer.bottom_layer if self.current_layer.bottom_layer is not None else self.current_layer.top_layer
+
+        self.current_layer.updateDisplay(0, self.height, 0, self.width)
 
     def map(self, x0, y0, width, height):
         x = int(x0 * self.width / width)

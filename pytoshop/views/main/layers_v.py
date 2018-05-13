@@ -88,7 +88,6 @@ class LayersView(QWidget):
             item = LayersItem(layer)
             list_item = QListWidgetItem()
             list_item.setSizeHint(item.sizeHint())
-            list_item.pos = layer.pos
 
             self.list.addItem(list_item)
             self.list.setItemWidget(list_item, item)
@@ -166,8 +165,8 @@ class LayersView(QWidget):
         self.list.takeItem(new_pos)
         self.layers.pop(new_pos)
 
-    def refresh(self, i):
-        self.layers[len(self.layers) - i - 1].refresh()
+    def refresh(self):
+        self.layers[self.list.currentRow()].refresh()
 
     def onChangeBlendMode(self):
         # Change blend mode

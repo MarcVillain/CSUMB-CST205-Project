@@ -13,25 +13,20 @@ class MenuBarView(QMenuBar):
         menuItems = {
             'File': {
                 'New': {'icon': 'new.png', 'trigger': self.doNothing},
-                'Import': {'icon': 'open.png', 'trigger': parent.loadImage},
+                'Load': {'icon': 'open.png', 'trigger': parent.loadImage},
                 'Save': {'icon': 'save.png', 'trigger': parent.saveImage},
-                'Export': {'icon': 'export.png', 'trigger': self.doNothing},
                 'Exit': {'icon': 'exit.png', 'trigger': parent.close}
             },
             'Edit': {
                 'Filters': {
-                    'Grayscale': {'trigger': self.grayScaleFilter},
-                    'Cool': {'trigger': self.cool},
-                    'Warm': {'trigger': self.warm},
-                    'Sepia': {'trigger': self.sepia},
-                    'Reduce Noise': {'trigger': self.reduceNoise},
-                    'Blur': {'trigger': self.blur},
-                    'Negative': {'trigger': self.negative}
+                    'Grayscale': {'trigger': partial(self.applyFilter, FiltersUtil.grayScale)},
+                    'Cool': {'trigger': partial(self.applyFilter, FiltersUtil.cool)},
+                    'Warm': {'trigger': partial(self.applyFilter, FiltersUtil.warm)},
+                    'Sepia': {'trigger': partial(self.applyFilter, FiltersUtil.sepia)},
+                    'Reduce Noise': {'trigger': partial(self.applyFilter, FiltersUtil.reduceNoise)},
+                    'Blur': {'trigger': partial(self.applyFilter, FiltersUtil.blur)},
+                    'Negative': {'trigger': partial(self.applyFilter, FiltersUtil.negative)}
                 }
-            },
-            'Layer': {
-                'Add New Layer': {'trigger': self.doNothing},
-                'Remove Layer': {'trigger': self.doNothing}
             }
         }
 
@@ -56,23 +51,7 @@ class MenuBarView(QMenuBar):
     def doNothing(self):
         print("Do Nothing")
 
-    def grayScaleFilter(self):
-        self.parent.drawing_board.controller.image.current_layer.applyFilter(FiltersUtil.grayScaleFilter)
-
-    def cool(self):
-        self.parent.drawing_board.controller.image.current_layer.applyFilter(FiltersUtil.coolFilter)
-
-    def warm(self):
-        self.parent.drawing_board.controller.image.current_layer.applyFilter(FiltersUtil.warmFilter)
-
-    def sepia(self):
-        self.parent.drawing_board.controller.image.current_layer.applyFilter(FiltersUtil.sepiaFilter)
-
-    def reduceNoise(self):
-        self.parent.drawing_board.controller.image.current_layer.applyFilter(FiltersUtil.reduceNoise)
-
-    def blur(self):
-        self.parent.drawing_board.controller.image.current_layer.applyFilter(FiltersUtil.blur)
-
-    def negative(self):
-        self.parent.drawing_board.controller.image.current_layer.applyFilter(FiltersUtil.negativeFilter)
+    def applyFilter(self, filter):
+        self.parent.drawing_board.controller.image.current_layer.applyFilter(filter)
+        self.parent.drawing_board.refresh()
+        self.parent.layers.refresh()
