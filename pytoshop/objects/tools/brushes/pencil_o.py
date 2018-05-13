@@ -29,7 +29,7 @@ class Pencil(Brush):
 
         # Create empty matrix with sharp circle in it
         mat = np.full((size, size, 4), 0, np.uint8)
-        r, g, b = self.color
+        r, g, b, a = self.color
         cv2.circle(mat, (center, center), radius, (r, g, b, 255 * self.opacity / 100), -1)
 
         return mat

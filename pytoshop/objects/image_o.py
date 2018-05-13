@@ -18,8 +18,6 @@ class Image:
 
         self.current_layer = Layer(self, pos=0)
         self.current_layer.fill([255, 255, 255])
-        # TODO remove this line, it's for test
-        self.current_layer.load_image('pytoshop/objects/test.png')
 
         self.top_layer = Layer(self, self.current_layer, None)
         self.current_layer.top_layer = self.top_layer

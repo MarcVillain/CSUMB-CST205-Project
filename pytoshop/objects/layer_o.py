@@ -170,10 +170,3 @@ class Layer:
                 colorID = (colorID + 1) % 2
 
         self.updateDisplay(0, self.image.height, 0, self.image.width)
-
-    def load_image(self, image_name):
-        self.rgb = cv.imread(image_name)
-        # TODO added this line to get blend_u working, should be removed later
-        self.rgb = cv.resize(self.rgb, (500, 500))
-        self.alpha = np.full((self.image.height, self.image.width, 1), 1.)
-        self.updateDisplay(0, self.image.height, 0, self.image.width)

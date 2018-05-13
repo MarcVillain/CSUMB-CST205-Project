@@ -29,7 +29,7 @@ class Eraser(Brush):
 
         # Create empty matrix with sharp circle in it
         mat = np.full((size, size, 4), 0, np.uint8)
-        r, g, b = self.color
+        r, g, b, a = self.color
         cv2.circle(mat, (center, center), radius, (r, g, b, 255 * self.opacity / 100), -1)
 
         # Apply gaussian blur filter to the matrix
@@ -46,7 +46,7 @@ class Eraser(Brush):
 
         # Create empty matrix with sharp circle in it
         mat = np.full((size, size, 4), 0, np.uint8)
-        r, g, b = self.color
+        r, g, b, a = self.color
         cv2.circle(mat, (center, center), radius, (0, 0, 0, 255), 1)
 
         return mat
