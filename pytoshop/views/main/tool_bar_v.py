@@ -46,4 +46,4 @@ class ToolBarView(QWidget):
         self.parent.topBar.changeTopBar(name)
         self.currentButton = self.buttons[name]
         self.currentButton.setChecked(True)
-        print(self.currentButton.objectName())
+        #print(self.currentButton.objectName())

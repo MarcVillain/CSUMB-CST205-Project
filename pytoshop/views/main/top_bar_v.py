@@ -25,15 +25,18 @@ class TopBarView(QWidget):
 
         self.setStyleSheet('color: white;')
 
-        self.layout.addStretch()
+        #self.layout.addStretch()
         self.setLayout(self.layout)
 
     # changes the top bar to the corresponding bar (of the clicked tool)
     def changeTopBar(self, name):
-        print("cleaning the widget")
-        self.currentBar.setParent(None)
+        #print("cleaning the widget")
+        self.layout.removeWidget(self.currentBar)
+        self.currentBar.setVisible(False)
         self.currentBar = self.top_bars[name]
         self.layout.addWidget(self.currentBar)
-        self.setLayout(self.layout)
+        #self.layout.addStretch()
+        self.currentBar.setVisible(True)
+        #self.setLayout(self.layout)
 
 

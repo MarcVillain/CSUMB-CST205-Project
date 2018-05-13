@@ -23,7 +23,7 @@ class Image:
         self.current_layer.top_layer = self.top_layer
 
         self.bottom_layer = Layer(self, None, self.current_layer)
-        self.bottom_layer.fill_checker((255, 255, 255), (205, 205, 205), 5)
+        self.bottom_layer.fill_checker()
         self.current_layer.bottom_layer = self.bottom_layer
         self.current_layer.top_layer = self.top_layer
 
@@ -57,4 +57,6 @@ class Image:
         self.current_layer.draw(image, self.width//2, self.height//2)
 
     def save(self, location):
+        self.bottom_layer.fill((0, 0, 0), 0.)
         cv2.imwrite(location + ".png", cv2.cvtColor(self.top_layer.bottom_layer.rgba_display, cv2.COLOR_RGBA2BGRA))
+        self.bottom_layer.fill_checker()

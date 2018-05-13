@@ -22,9 +22,9 @@ class Layer:
 
         self.clear()
 
-    def fill(self, color):
+    def fill(self, color, alpha=1.):
         self.rgb = np.full((self.image.height, self.image.width, 3), color, np.uint8)
-        self.alpha = np.full((self.image.height, self.image.width, 1), 1.)
+        self.alpha = np.full((self.image.height, self.image.width, 1), alpha)
 
         self.updateDisplay(0, self.image.height, 0, self.image.width)
 
@@ -154,7 +154,7 @@ class Layer:
         if self.top_layer is not None:
             self.top_layer.updateDisplay(start_y, end_y, start_x, end_x)
 
-    def fill_checker(self, colorA, colorB, size):
+    def fill_checker(self, colorA=(255, 255, 255), colorB=(205, 205, 205), size=5):
         color = (colorA, colorB)
         colorID = 0
         for j in range(self.image.height):
