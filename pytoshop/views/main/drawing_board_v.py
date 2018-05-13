@@ -2,6 +2,8 @@ from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QLabel
 
 from pytoshop.controllers.main.drawing_board_c import DrawingBoardController
+from pytoshop.utils.blend_u import blend
+from pytoshop.utils.color_u import rgba_to_rgb, rgb_to_rgba
 
 
 class DrawingBoardView(QLabel):
@@ -19,7 +21,12 @@ class DrawingBoardView(QLabel):
 
         new_width, new_height = image.width * image.scale, image.height * image.scale
 
-        qimage = QImage(image.top_layer.rgba_display, image.width, image.height, image.bytesPerLine, QImage.Format_RGBA8888)
+        top_color, top_alpha = rgba_to_rgb(image.top_layer.rgba_display)
+        bcg_color, bcg_alpha = rgba_to_rgb(image.bottom_layer.rgba_display)
+        new_rgb, new_alpha = blend(top_color, top_alpha, bcg_color, bcg_alpha)
+        rgba_display = rgb_to_rgba(new_rgb, new_alpha)
+
+        qimage = QImage(rgba_display, image.width, image.height, image.bytesPerLine, QImage.Format_RGBA8888)
         qimage = qimage.scaled(new_width, new_height)
         pixmap = QPixmap(qimage)
         pixmap = pixmap.scaled(new_width, new_height)

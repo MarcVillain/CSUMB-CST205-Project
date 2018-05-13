@@ -118,6 +118,7 @@ class LayersView(QWidget):
 
     def onClickItem(self, item):
         self.image.current_layer = self.layers[len(self.layers) - item.pos - 1].layer
+        self.blend_list.setCurrentIndex(list(self.blend_modes.values()).index(self.image.current_layer.blend_mode))
 
     def addLayer(self, layer):
         item = LayersItem(layer)
