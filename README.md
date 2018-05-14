@@ -11,10 +11,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Python libraries: PyQt5, OpenCV2 and NumPy
+Python libraries: PyQt5, OpenCV2, NumPy and SciPy
 
 ```
-pip3 install pyqt5 opencv-python numpy
+pip3 install pyqt5 opencv-python numpy scipy
 ```
 
 ### Installing
